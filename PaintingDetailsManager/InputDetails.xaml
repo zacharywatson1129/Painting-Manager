@@ -1,0 +1,49 @@
+﻿<Window x:Class="PaintingDetailsManager.InputDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PaintingDetailsManager"
+        mc:Ignorable="d"
+        Title="InputDetails" MinHeight="450" MinWidth="500" FontSize="16">
+    <Grid Margin="30">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="imgBox"/>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Top" Margin="20" Text="Painting Name:"/>
+            <TextBox x:Name="paintingNameTextBox" Grid.Column="1"/>
+            <TextBlock Grid.Row="1" VerticalAlignment="Top" Margin="20" Text="Width:"/>
+            <TextBox Grid.Row="1" x:Name="widthTextBox" Grid.Column="1"/>
+            <TextBlock Grid.Row="2" VerticalAlignment="Top" Margin="20" Text="Height:"/>
+            <TextBox Grid.Row="2" x:Name="heightTextBox" Grid.Column="1"/>
+            <TextBlock Grid.Row="3" VerticalAlignment="Top" Margin="20" Text="Date:"/>
+            <DatePicker Grid.Row="3" x:Name="datePicker" Grid.Column="1"/>
+            <TextBlock Grid.Row="4" VerticalAlignment="Top" Margin="20" Text="Price:"/>
+            <TextBox Grid.Row="4" x:Name="priceTextBox" Grid.Column="1"/>
+        </Grid>
+
+        <Button x:Name="btnSavePainting" Content="Save Painting"
+                Grid.Row="1" Grid.Column="1" Margin="50 15"
+                Click="btnSavePainting_Click"/>
+    </Grid>
+</Window>

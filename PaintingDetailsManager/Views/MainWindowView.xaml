@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Title="Painting Details Manager"
         Height="600" Width="800" 
-        FontSize="16" FontFamily="HP Simplified" Background="#FF0143B9">
+        FontSize="16" FontFamily="HP Simplified" Background="#FF3E3E3E">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100px" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -18,26 +18,21 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Margin="5" Grid.Row="0" Orientation="Vertical" Grid.RowSpan="4">
-            <Button x:Name="LoadDefaultView" Margin="0 10 0 0" Height="60" Width="80" 
-                    Background="Transparent" BorderBrush="Transparent">
-                <StackPanel Orientation="Vertical">
-                    <Image Width="40" Source="..\Icons\iconmonstr-home-3-240.png" />
-                    <TextBlock Text="Home" HorizontalAlignment="Center"/>
-                </StackPanel>
+        <StackPanel Margin="5 0 5 0" Grid.Row="0" Orientation="Vertical" Grid.RowSpan="4">
+            <Button x:Name="LoadDefaultView" Margin="0 0 0 0" Height="75" Width="75">
+                <Image Width="50" Source="..\Icons\iconmonstr-home-3-240.png" />
             </Button>
-            <Button x:Name="CreateNewImage" Margin="0" Height="60" Width="80" 
-                    Background="Transparent" BorderBrush="Transparent">
-                <Image Margin="10" Source="..\Icons\iconmonstr-plus-2-240.png" />
+            <Button x:Name="CreateNewImage" Margin="0" Height="75" Width="75">
+                <Image Width="50" Source="..\Icons\iconmonstr-plus-2-240.png" />
             </Button>
             <Button x:Name="LoadNotesPage" Margin="0" Height="75" Width="75">
-                <Image Margin="10" Source="..\Icons\iconmonstr-note-20-240.png" />
+                <Image Width="50" Source="..\Icons\iconmonstr-note-20-240.png" />
             </Button>
             <Button x:Name="LoadListView" Margin="0" Height="75" Width="75">
-                <Image Margin="10" Source="..\Icons\iconmonstr-menu-4-240.png" />
+                <Image Width="50" Source="..\Icons\iconmonstr-menu-4-240.png" />
             </Button>
             <Button x:Name="LoadGalleryView" Margin="0" Height="75" Width="75">
-                <Image Margin="10" Source="..\Icons\iconmonstr-picture-17-240.png" />
+                <Image Width="50" Source="..\Icons\iconmonstr-picture-17-240.png" />
             </Button>
 
         </StackPanel>

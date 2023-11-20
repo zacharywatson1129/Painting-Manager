@@ -4,7 +4,7 @@ I was trying to literally glue small pictures of my paintings into a spiral note
 
 The most prominent (and useful) feature is the gallery, which allows you to view paintings by filtering. Additionally, you can see the details of a painting, such as its size, painting type, and what categories it is in.
 <div align="center">
-    <img width="700" src="images/Gallery-Screenshot.png" alt="Screenshot.png">
+    <img width="700" src="images/Gallery-Screenshot.PNG" alt="Screenshot.png">
 </div>
 
 Other useful features include the Notes section, which allows me to note down things quickly that I used to scribble down on pieces of scrap paper all over my desk.

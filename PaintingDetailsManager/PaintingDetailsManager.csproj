@@ -112,13 +112,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="DialogService.cs" />
     <Compile Include="HTMLWriter.cs" />
     <Compile Include="IDialog.cs" />
     <Compile Include="IInput.cs" />
     <Compile Include="NewNoteDialog.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="PrintDG.cs" />
+    <Compile Include="ViewModels\EditPaintingViewModel.cs" />
     <Compile Include="ViewModels\AddPaintingViewModel.cs" />
     <Compile Include="ViewModels\DefaultViewModel.cs" />
     <Compile Include="ViewModels\CreateNoteViewModel.cs" />
@@ -126,6 +126,9 @@
     <Compile Include="ViewModels\GridViewModel.cs" />
     <Compile Include="ViewModels\ListViewModel.cs" />
     <Compile Include="ViewModels\PaintingSizeVisualizerViewModel.cs" />
+    <Compile Include="Views\EditPaintingView.xaml.cs">
+      <DependentUpon>EditPaintingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddPaintingView.xaml.cs">
       <DependentUpon>AddPaintingView.xaml</DependentUpon>
     </Compile>
@@ -153,6 +156,10 @@
     <Compile Include="Views\PaintingSizeVisualizerView.xaml.cs">
       <DependentUpon>PaintingSizeVisualizerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\EditPaintingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AddPaintingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

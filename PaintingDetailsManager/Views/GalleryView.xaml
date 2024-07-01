@@ -49,7 +49,8 @@
         <Expander ExpandDirection="Left" IsExpanded="False" Grid.RowSpan="3" Grid.Column="3"
                   Foreground="White">
             <StackPanel Orientation="Vertical">
-                <Expander ExpandDirection="Down" Header="Filter Options" Foreground="White">
+                <Expander ExpandDirection="Down" Header="Filter Options" Foreground="White"
+                          MinWidth="200" MaxWidth="200">
                     <StackPanel Orientation="Vertical">
                         
                         <ComboBox x:Name="Categories" Margin="30 5" Grid.Column="1"
@@ -84,8 +85,8 @@
 
                 <Expander ExpandDirection="Down" Header="Painting Options" Foreground="White">
                     <StackPanel Orientation="Vertical">
-                        <Button Margin="5 0" Padding="15" Foreground="Blue" BorderBrush="Blue" 
-                                Content="Edit Details" Background="Transparent" x:Name="Edit"/>
+                        <Button Margin="5 0" Padding="15" Foreground="Green" BorderBrush="Green"
+                                Content="Edit Details" Background="Transparent" x:Name="EditPainting"/>
                         <Button Margin="5 10" Padding="15" Foreground="White" Content="Delete Painting" 
                                 Background="Red" x:Name="DeletePainting"/>
 

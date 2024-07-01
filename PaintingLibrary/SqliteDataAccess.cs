@@ -109,6 +109,27 @@ namespace PaintingLibrary
             }
         }
 
+        public static void updatePainting(Painting painting)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                string query = "update PaintingsTable set FileName = @FileName where Id = @Id";
+                var output = cnn.Execute(query, new { FileName = painting.FileName, Id = painting.Id });
+                
+                query = "update PaintingsTable set Name = @Name where Id = @Id";
+                output = cnn.Execute(query, new { Name = painting.Name, Id = painting.Id });
+
+                query = "update PaintingsTable set Width = @Width where Id = @Id";
+                output = cnn.Execute(query, new { Width = painting.Width, Id = painting.Id });
+
+                query = "update PaintingsTable set Length = @Length where Id = @Id";
+                output = cnn.Execute(query, new { Length = painting.Length, Id = painting.Id });
+
+                query = "update PaintingsTable set DatePainted = @DatePainted where Id = @Id";
+                output = cnn.Execute(query, new { DatePainted = painting.DatePainted, Id = painting.Id });
+            }
+        }
+
         public static void deletePainting(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
@@ -118,7 +139,7 @@ namespace PaintingLibrary
                 var output = cnn.Execute(query, new { Id = id });
 
                 query = "delete from PaintingsTable where Id = @Id";
-                output = cnn.Execute(query, new { Id = id });
+                cnn.Execute(query, new { Id = id });
             }
         }
 
@@ -214,8 +235,15 @@ namespace PaintingLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
-                cnn.Execute("insert into CategorizedPaintings (CategoryID, PaintingID) values (@categoryID,@paintingID)", 
-                    new { CategoryID = categoryID, PaintingID = paintingID });
+                try
+                {
+                    cnn.Execute("insert into CategorizedPaintings (CategoryID, PaintingID) values (@categoryID,@paintingID)",
+                        new { categoryID = categoryID, paintingID = paintingID });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("junk");
+                }
             }
         }
 
@@ -240,6 +268,15 @@ namespace PaintingLibrary
         private static string loadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+        }
+
+        public static void clearCategoriesForPainting(int id)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("delete from CategorizedPaintings where PaintingId = @PaintingId",
+                    new { PaintingId = id });
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Microsoft.Win32;
 using PaintingLibrary;
 using PaintingLibrary.Models;
 using System;
@@ -29,12 +30,17 @@ namespace PaintingDetailsManager.ViewModels
             get { return $"{ CurrentPainting.Width} x {CurrentPainting.Length} on {CurrentPainting.PaintingSurface}"; }
         }
 
+        
         private string _currentPaintingPath;
-
+        /// <summary>
+        /// The entire path of the current painting's image (images folder path + filename)
+        /// </summary>
         public string CurrentPaintingPath
         {
             get { return _currentPaintingPath; }
-            set { _currentPaintingPath = value; 
+            set 
+            { 
+                _currentPaintingPath = value; 
                 NotifyOfPropertyChange(() => CurrentPaintingPath);
                 NotifyOfPropertyChange(() => SizeAndSurface);
             }
@@ -304,6 +310,15 @@ namespace PaintingDetailsManager.ViewModels
                                    orderby p.DatePainted
                                    select p;
             FilteredPaintings = orderedPaintings.ToList();
+        }
+        
+        public void EditPainting()
+        {
+            EditPaintingViewModel vm = new EditPaintingViewModel(CurrentPainting.Id);
+            WindowManager manager = new WindowManager();
+            manager.ShowDialog(vm, null, null); 
+            
+            //SetPainting();
         }
 
         /*public bool CanOrderByDate

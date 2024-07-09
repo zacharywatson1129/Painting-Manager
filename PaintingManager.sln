@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaintingManager", "PaintingManager\PaintingManager.csproj", "{F9500C10-EFB6-4715-A270-64060310A9B7}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingLibrary", "PaintingLibrary\PaintingLibrary.csproj", "{414124B1-270A-4859-961B-46D57E169AEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_Demo", "WPF_Demo\WPF_Demo.csproj", "{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingLibrary.Tests", "PaintingLibrary.Tests\PaintingLibrary.Tests.csproj", "{9B792ACF-92F5-4A46-AD9B-D40043E39188}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

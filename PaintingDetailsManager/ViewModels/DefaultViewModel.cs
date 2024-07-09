@@ -14,8 +14,11 @@ namespace PaintingDetailsManager.ViewModels
 {
     public class DefaultViewModel : Screen
     {
+        IConductor conductor;
         public DefaultViewModel()
         {
+            conductor = new Conductor<IScreen>();
+
             loadImages();
 
             Categories = SqliteDataAccess.loadAllCategories();

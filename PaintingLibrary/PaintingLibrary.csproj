@@ -75,6 +75,7 @@
     <Compile Include="DBQueryResult.cs" />
     <Compile Include="Models\CategorizedPainting.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\FileImage.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Painting.cs" />
     <Compile Include="Models\SurfaceType.cs" />

@@ -23,7 +23,7 @@ namespace PaintingDetailsManager.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindowView : Window
+    public partial class ShellView : Window
     {
 
         // List<string> imageFileNames = new List<string>();
@@ -52,7 +52,7 @@ namespace PaintingDetailsManager.Views
             }
         }
         */
-        public MainWindowView()
+        public ShellView()
         {
             InitializeComponent();
             /*loadImages();

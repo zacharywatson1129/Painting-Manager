@@ -46,13 +46,11 @@ namespace PaintingDetailsManager
                 .ToList()
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                     viewModelType, viewModelType.ToString(), viewModelType));
-
-
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<MainWindowViewModel>();           
+            DisplayRootViewFor<ShellViewModel>();           
         }
 
         protected override object GetInstance(Type service, string key)

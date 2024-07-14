@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
+using PaintingDetailsManager.EventModels;
 using PaintingLibrary;
 using PaintingLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,20 +13,20 @@ using System.Threading.Tasks;
 
 namespace PaintingDetailsManager.ViewModels
 {
-    public class AddPaintingViewModel : Screen
+    public class AddPaintingViewModel : Screen, IHandle<AddPaintingEvent>
     {
-        private int _myNum = 5;
-        public int MyNum 
-        { 
-            get { return _myNum; }
-            set { _myNum = value; NotifyOfPropertyChange(() => MyNum); }
-        }
+        private SimpleContainer _container;
 
-        public AddPaintingViewModel(string justFileName, string originalFilePath)
+        public AddPaintingViewModel(IEventAggregator events, SimpleContainer container)
         {
+            _events = events;
+            _events.Subscribe(this);
+            _container = container;
+
             CurrentPainting = new Painting();
-            CurrentPainting.FileName = justFileName;
-            CurrentPaintingPath = originalFilePath;
+            //CurrentPainting.FileName = justFileName;
+
+            //CurrentPaintingPath = originalFilePath;
             Categories = SqliteDataAccess.loadAllCategories();
             CurrentPainting.PaintingSurface = SelectedSurfaceType;
             AddedCategories = new ObservableCollection<Category>();
@@ -90,6 +92,9 @@ namespace PaintingDetailsManager.ViewModels
         public List<Category> Categories { get; set; }
 
         private string _currentPaintingPath;
+
+        public IEventAggregator _events { get; set; }
+
         public string CurrentPaintingPath
         {
             get { return _currentPaintingPath; }
@@ -185,6 +190,14 @@ namespace PaintingDetailsManager.ViewModels
             
             // Step 3 - TryClose();
             TryClose();
+        }
+
+        public void Handle(AddPaintingEvent message)
+        {
+            CurrentPainting.FileName = message.PaintingFileImage.FileName;
+            CurrentPaintingPath = message.PaintingFileImage.CompleteFilePath;
+
+            Debug.WriteLine($"AddPaintingEvent handled. FileName: {CurrentPainting.FileName}, FilePath: {CurrentPaintingPath}");
         }
     }
 }

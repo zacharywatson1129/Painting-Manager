@@ -57,10 +57,10 @@
 
             <!--<TextBox Grid.Row="3" x:Name="CurrentPainting_Width" Margin="0 0 10 0" />-->
             
-            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Text="Length:" />
+            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Text="Height:" />
             <!--<TextBox Grid.Row="3" Grid.Column="1"  x:Name="CurrentPainting_Length" />-->
 
-            <views:NumberPicker Value="{Binding CurrentPainting.Length, Mode=TwoWay}" Margin="0 5"
+            <views:NumberPicker Value="{Binding CurrentPainting.Height, Mode=TwoWay}" Margin="0 5"
                           Grid.Column="1" Minimum="1" Maximum="100" Grid.Row="3" />
 
             <TextBlock Grid.Row="4" VerticalAlignment="Center" Text="Date Painted:" />

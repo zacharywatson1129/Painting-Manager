@@ -27,7 +27,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public string SizeAndSurface
         {
-            get { return $"{ CurrentPainting.Width} x {CurrentPainting.Length} on {CurrentPainting.PaintingSurface}"; }
+            get { return $"{ CurrentPainting.Width} x {CurrentPainting.Height} on {CurrentPainting.PaintingSurface}"; }
         }
 
         

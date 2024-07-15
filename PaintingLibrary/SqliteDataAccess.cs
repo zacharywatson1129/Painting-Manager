@@ -122,8 +122,8 @@ namespace PaintingLibrary
                 query = "update PaintingsTable set Width = @Width where Id = @Id";
                 output = cnn.Execute(query, new { Width = painting.Width, Id = painting.Id });
 
-                query = "update PaintingsTable set Length = @Length where Id = @Id";
-                output = cnn.Execute(query, new { Length = painting.Length, Id = painting.Id });
+                query = "update PaintingsTable set Height = @Height where Id = @Id";
+                output = cnn.Execute(query, new { Length = painting.Height, Id = painting.Id });
 
                 query = "update PaintingsTable set DatePainted = @DatePainted where Id = @Id";
                 output = cnn.Execute(query, new { DatePainted = painting.DatePainted, Id = painting.Id });
@@ -208,7 +208,7 @@ namespace PaintingLibrary
             Command.Parameters.Add(new SQLiteParameter("@Name", painting.Name));
             Command.Parameters.Add(new SQLiteParameter("@FileName", painting.FileName));
             Command.Parameters.Add(new SQLiteParameter("@Width", painting.Width));
-            Command.Parameters.Add(new SQLiteParameter("@Length", painting.Length));
+            Command.Parameters.Add(new SQLiteParameter("@Length", painting.Height));
             Command.Parameters.Add(new SQLiteParameter("@DatePainted", painting.DatePainted));
             Command.Parameters.Add(new SQLiteParameter("@Price", painting.Price));
             Command.Parameters.Add(new SQLiteParameter("@PaintingSurface", painting.PaintingSurface));

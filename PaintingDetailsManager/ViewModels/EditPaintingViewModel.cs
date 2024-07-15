@@ -154,7 +154,7 @@ namespace PaintingDetailsManager.ViewModels
         public Painting CurrentPainting { get; set; }
 
 
-        DateTime _datePicker_Date = DateTime.Now;
+        DateTime _datePicker_Date; // = CurrentPainting.DatePainted;
         public DateTime DatePicker_Date 
         { 
             get
@@ -163,6 +163,7 @@ namespace PaintingDetailsManager.ViewModels
             }
             set
             {
+                // not sure why I hard set it, only applies to me.
                 if (value.Year > 2000)
                 {
                     _datePicker_Date = value;
@@ -232,7 +233,7 @@ namespace PaintingDetailsManager.ViewModels
                         //MessageBox.Show(CurrentPaintingPath);
                         string imgSource = imagesFolderPath + openFileDialog.SafeFileName;
 
-                        Console.WriteLine("Hey there. imgSource: " + imgSource);
+                        // Console.WriteLine("Hey there. imgSource: " + imgSource);
                         //string imgSource = imagesFolderPath + openFileDialog.SafeFileName;
                         // if the image is not in the folder currently basically (meaning we must have changed it),
                         // then let's copy it to the folder.

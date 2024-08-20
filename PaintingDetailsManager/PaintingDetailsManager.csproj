@@ -112,12 +112,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="EventModels\AddNoteEvent.cs" />
     <Compile Include="EventModels\AddPaintingEvent.cs" />
     <Compile Include="HTMLWriter.cs" />
     <Compile Include="IDialog.cs" />
     <Compile Include="IInput.cs" />
-    <Compile Include="NewNoteDialog.cs" />
-    <Compile Include="IShell.cs" />
     <Compile Include="PrintDG.cs" />
     <Compile Include="ViewModels\EditPaintingViewModel.cs" />
     <Compile Include="ViewModels\AddPaintingViewModel.cs" />

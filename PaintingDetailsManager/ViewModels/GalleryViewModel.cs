@@ -12,10 +12,12 @@ namespace PaintingDetailsManager.ViewModels
 {
     public class GalleryViewModel : Screen
     {
-        public GalleryViewModel()
+        private IDataAccess _dataAccess;
+        public GalleryViewModel(IDataAccess dataAccess)
         {
+            _dataAccess = dataAccess;
             loadImages();
-            Categories = SqliteDataAccess.loadAllCategories();
+            Categories = _dataAccess.loadAllCategories();
 
             Years = new List<int>();
             Years.Add(0);
@@ -72,7 +74,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void loadImages()
         {
-            SqliteDataAccess.loadAllPaintings().ForEach(p => allPaintings.Add(p));
+            _dataAccess.loadAllPaintings().ForEach(p => allPaintings.Add(p));
             foreach (Painting p in allPaintings)
             {
                 p.FileName = imagesFolderPath + p.FileName;
@@ -159,6 +161,7 @@ namespace PaintingDetailsManager.ViewModels
 
         private List<Category> _categories;
 
+        // Would like to try this as just a readonly property.
         public List<Category> Categories
         {
             get { return _categories; }
@@ -314,7 +317,7 @@ namespace PaintingDetailsManager.ViewModels
         
         public void EditPainting()
         {
-            EditPaintingViewModel vm = new EditPaintingViewModel(CurrentPainting.Id);
+            EditPaintingViewModel vm = new EditPaintingViewModel(CurrentPainting.Id, _dataAccess);
             WindowManager manager = new WindowManager();
             manager.ShowDialog(vm, null, null); 
             

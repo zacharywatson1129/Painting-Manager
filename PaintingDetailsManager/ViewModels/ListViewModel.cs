@@ -16,18 +16,22 @@ namespace PaintingDetailsManager.ViewModels
         readonly string imagesFolderPath = System.IO.Path.GetFullPath(System.IO.Path.Combine
                                             (System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
                                             @"..\..\Images\"));
-        public ListViewModel()
+        private IDataAccess _dataAccess;
+        public ListViewModel(IDataAccess dataAccess)
         {
+            _dataAccess = dataAccess;
+            Paintings = new BindableCollection<Painting>(_dataAccess.loadAllPaintings().AsEnumerable());
             RefreshData();
         }
 
-        public BindableCollection<Painting> Paintings { get; set; } = new BindableCollection<Painting>(SqliteDataAccess.loadAllPaintings().AsEnumerable());
+        public BindableCollection<Painting> Paintings { get; set; } 
+            //= new BindableCollection<Painting>(_dataAccess.loadAllPaintings().AsEnumerable());
 
         public Painting SelectedPainting { get; set; }
 
         public void RefreshData()
         {
-            var allPaintings = SqliteDataAccess.loadAllPaintings();
+            var allPaintings = _dataAccess.loadAllPaintings();
 
             var orderedPaintings = from p in allPaintings
                                    orderby p.DatePainted
@@ -45,7 +49,7 @@ namespace PaintingDetailsManager.ViewModels
         {
             if (SelectedPainting != null)
             {
-                SqliteDataAccess.deletePainting(SelectedPainting.Id);
+                _dataAccess.deletePainting(SelectedPainting.Id);
                 RefreshData();
             }
         }

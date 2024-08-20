@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBQueryResult.cs" />
+    <Compile Include="IDataAccess.cs" />
     <Compile Include="Models\CategorizedPainting.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\FileImage.cs" />

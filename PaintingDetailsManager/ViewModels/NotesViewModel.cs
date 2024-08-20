@@ -13,6 +13,7 @@ namespace PaintingDetailsManager.ViewModels
 {
     public class NotesViewModel : Screen
     {
+        private IDataAccess _dataAccess;
         private BindableCollection<Note> notes;
 
         public BindableCollection<Note> Notes
@@ -21,28 +22,29 @@ namespace PaintingDetailsManager.ViewModels
             set { notes = value; NotifyOfPropertyChange(() => Notes); }
         }
 
-        private Note note;
+        private Note _note;
 
         public Note SelectedNote
         {
-            get { return note; }
+            get { return _note; }
             set 
             { 
-                note = value; 
+                _note = value; 
                 NotifyOfPropertyChange(() => SelectedNote); 
                 NotifyOfPropertyChange(() => CanDeleteNote);
                 NotifyOfPropertyChange(() => Description);
             }
         }
 
-        public NotesViewModel()
+        public NotesViewModel(IDataAccess dataAccess)
         {
+            _dataAccess = dataAccess;
             LoadNotes();
         }
 
         public void DeleteNote()
         {
-            SqliteDataAccess.deleteNote(SelectedNote.Id);
+            _dataAccess.deleteNote(SelectedNote.Id);
             Notes.Remove(SelectedNote);
         }
 
@@ -61,7 +63,7 @@ namespace PaintingDetailsManager.ViewModels
             if (n != null)
             {
                 this.Notes.Add(n);
-                SqliteDataAccess.SaveNote(n);
+                _dataAccess.SaveNote(n);
             }
             else
             {
@@ -74,7 +76,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void CreateNewNote()
         {
-            CreateNoteViewModel vm = new CreateNoteViewModel();
+            CreateNoteViewModel vm = new CreateNoteViewModel(_dataAccess);
             // NewNoteViewModel vm2 = new NewNoteViewModel();
             WindowManager manager = new WindowManager();
 
@@ -91,7 +93,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void LoadNotes()
         {
-            List<Note> temp = SqliteDataAccess.loadAllNotes();
+            List<Note> temp = _dataAccess.loadAllNotes();
             Notes = new BindableCollection<Note>(temp);
         }
 

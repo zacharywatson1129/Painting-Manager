@@ -10,16 +10,23 @@ using System.Threading.Tasks;
 
 namespace PaintingDetailsManager.ViewModels
 {
+    
     [Export(typeof(IInput<Note>))]
-    public class CreateNoteViewModel : Screen, IInput<Note>
+    public class CreateNoteViewModel : Screen
     {
-
+        private IDataAccess _dataAccess;
+        public CreateNoteViewModel(IDataAccess dataAccess) 
+        {
+            _dataAccess = dataAccess;
+        }
         public Note CurrentItem { get; set; } = new Note();
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
         }
+
+        
 
         /*public bool validate()
         {
@@ -44,12 +51,12 @@ namespace PaintingDetailsManager.ViewModels
                 return;
             }
             // TODO: Use String interpolation here
+            // We're not going to worry about a date and time for the note. This is enough.
             CurrentItem.Title = DateTime.Today.ToShortDateString() + " - " + CurrentItem.Title;
-            SqliteDataAccess.SaveNote(CurrentItem);
+            _dataAccess.SaveNote(CurrentItem);
             TryClose();
         }
 
-        // TODO: Remove the need to use the dialog service thing.
         public bool validate()
         {
             return true;

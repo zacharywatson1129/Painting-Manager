@@ -14,14 +14,14 @@ namespace PaintingDetailsManager.ViewModels
 {
     public class DefaultViewModel : Screen
     {
-        IConductor conductor;
-        public DefaultViewModel()
-        {
-            conductor = new Conductor<IScreen>();
+        private IDataAccess _dataAccess;
 
+        public DefaultViewModel(IDataAccess dataAccess)
+        {
+            _dataAccess = dataAccess;
             loadImages();
 
-            Categories = SqliteDataAccess.loadAllCategories();
+            Categories = _dataAccess.loadAllCategories();
 
             this.SizeQuantityTable = new DataTable();
 
@@ -87,8 +87,6 @@ namespace PaintingDetailsManager.ViewModels
                 }
                 this.SizeQuantityTable.Rows.Add(tempRow);
             }
-
-
         }
 
         public bool DoesContainCategory(Painting painting, Category cat)
@@ -104,7 +102,6 @@ namespace PaintingDetailsManager.ViewModels
         }
 
         private DataTable sizeQuantityTable;
-
         public DataTable SizeQuantityTable
         {
             get
@@ -176,7 +173,7 @@ namespace PaintingDetailsManager.ViewModels
             try
             {
                 allPaintings.Clear();
-                SqliteDataAccess.loadAllPaintings().ForEach(p => allPaintings.Add(p));
+                _dataAccess.loadAllPaintings().ForEach(p => allPaintings.Add(p));
                 foreach (Painting p in allPaintings)
                 {
                     p.FileName = imagesFolderPath + p.FileName;
@@ -186,7 +183,10 @@ namespace PaintingDetailsManager.ViewModels
                     CurrentPainting = allPaintings[0];
                     NotifyOfPropertyChange(() => CurrentImageNumber);
                 }
-            } catch (Exception ex)
+            }
+            // TODO: We need real error handling here.
+            // Probably should give the user an error or message box.
+            catch (Exception ex)
             {
                 Trace.TraceInformation("Error during loading images. Here are the details:\n" + ex.Message);
                 Trace.Flush();
@@ -230,5 +230,7 @@ namespace PaintingDetailsManager.ViewModels
                 return $"{imgIndex + 1}/{allPaintings.Count}";
             }
         }
+
+        
     }
 }

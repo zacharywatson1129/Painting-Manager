@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using PaintingDetailsManager.ViewModels;
+using PaintingLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace PaintingDetailsManager
             // only need ONE window manager and one event aggregator.
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IDataAccess, SqliteDataAccess>();
 
             // Don't want to use a reflection a lot because of performance
             // but it won't hurt to do it once at startup.

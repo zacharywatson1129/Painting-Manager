@@ -16,22 +16,26 @@ namespace PaintingDetailsManager.ViewModels
     public class AddPaintingViewModel : Screen, IHandle<AddPaintingEvent>
     {
         private SimpleContainer _container;
+        private IDataAccess _dataAccess;
 
-        public AddPaintingViewModel(IEventAggregator events, SimpleContainer container)
+
+        public AddPaintingViewModel(IEventAggregator events, SimpleContainer container,
+                                    IDataAccess dataAccess)
         {
             _events = events;
             _events.Subscribe(this);
             _container = container;
+            _dataAccess = dataAccess;
 
             CurrentPainting = new Painting();
             //CurrentPainting.FileName = justFileName;
 
             //CurrentPaintingPath = originalFilePath;
-            Categories = SqliteDataAccess.loadAllCategories();
+            Categories = _dataAccess.loadAllCategories();
             CurrentPainting.PaintingSurface = SelectedSurfaceType;
             AddedCategories = new ObservableCollection<Category>();
             MySurfaceType = Enum.GetValues(typeof(SurfaceType)).Cast<SurfaceType>().ToList();
-        
+            
         }
 
         private SurfaceType _selectedSurfaceType;
@@ -170,7 +174,7 @@ namespace PaintingDetailsManager.ViewModels
 
             // Step 1 - Save painting to the database.
             
-            DBQueryResult result = SqliteDataAccess.savePainting(CurrentPainting);
+            DBQueryResult result = _dataAccess.savePainting(CurrentPainting);
             CurrentPainting.Id = result.LastID;
 
             // We need to get the ID of the item we just saved.
@@ -178,7 +182,7 @@ namespace PaintingDetailsManager.ViewModels
             // Step 2 - Super important, save categories to the database.
             foreach (Category c in CurrentPainting.Categories)
             {
-                SqliteDataAccess.saveCategorizedPainting(CurrentPainting.Id, c.ID);
+                _dataAccess.saveCategorizedPainting(CurrentPainting.Id, c.ID);
             }
 
             // Step 2 - If we were successful, copy the image to images folder.
@@ -196,8 +200,6 @@ namespace PaintingDetailsManager.ViewModels
         {
             CurrentPainting.FileName = message.PaintingFileImage.FileName;
             CurrentPaintingPath = message.PaintingFileImage.CompleteFilePath;
-
-            Debug.WriteLine($"AddPaintingEvent handled. FileName: {CurrentPainting.FileName}, FilePath: {CurrentPaintingPath}");
         }
     }
 }

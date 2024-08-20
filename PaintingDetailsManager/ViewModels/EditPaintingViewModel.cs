@@ -16,7 +16,7 @@ namespace PaintingDetailsManager.ViewModels
 {
     public class EditPaintingViewModel : Screen
     {
-
+        private IDataAccess _dataAccess;
         const string IMG_DIALOG_FILTER = "All Image Files | *.*";
 
         private int _myNum = 5;
@@ -26,9 +26,11 @@ namespace PaintingDetailsManager.ViewModels
             set { _myNum = value; NotifyOfPropertyChange(() => MyNum); }
         }
 
-        public EditPaintingViewModel(int id)
+        // Todo: Remove id from this contructor, pass through an event.
+        public EditPaintingViewModel(int id, IDataAccess dataAccess)
         {
-            List<Painting> allPaintings = SqliteDataAccess.loadAllPaintings();
+            _dataAccess = dataAccess;
+            List<Painting> allPaintings = _dataAccess.loadAllPaintings();
             CurrentPainting = allPaintings.Where((p) => p.Id == id).First();
 
             // Probably a bad name. We are sort of assuming we're using a DatePicker, when technically it could be any component
@@ -37,13 +39,14 @@ namespace PaintingDetailsManager.ViewModels
             
             // This is because the file name is JUST the file name, does not include path.
             CurrentPaintingPath = imagesFolderPath + CurrentPainting.FileName;
-            Categories = SqliteDataAccess.loadAllCategories();
+            Categories = _dataAccess.loadAllCategories();
 
             MySurfaceType = Enum.GetValues(typeof(SurfaceType)).Cast<SurfaceType>().ToList();
             SelectedSurfaceType =CurrentPainting.PaintingSurface;
             AddedCategories = new ObservableCollection<Category>(CurrentPainting.Categories); // new ObservableCollection<Category>();
+            
             //MySurfaceType = CurrentPainting.PaintingSurface; //Enum.GetValues(typeof(SurfaceType)).Cast<SurfaceType>().ToList();
-        
+
         }
 
         private SurfaceType _selectedSurfaceType;
@@ -189,18 +192,18 @@ namespace PaintingDetailsManager.ViewModels
             // TODO: Fill in all the other properties.
 
             // Step 1 - Save updated painting to the database.
-            SqliteDataAccess.updatePainting(CurrentPainting);
+            _dataAccess.updatePainting(CurrentPainting);
 
             // Step 2 - Clear categories for this painting - just wipe them out and resave them. Much easier than
             // determining which ones may have been deleted or which ones were not. Might approach this differently
             // if there was going to be an exceptionally large amount of categories but I don't expect that.
-            SqliteDataAccess.clearCategoriesForPainting(CurrentPainting.Id);
+            _dataAccess.clearCategoriesForPainting(CurrentPainting.Id);
             
             // Step 3 - Save categories to the database.
             foreach (Category c in AddedCategories)
             {
                 // Console.Write("test");
-                SqliteDataAccess.saveCategorizedPainting(CurrentPainting.Id, c.ID);
+                _dataAccess.saveCategorizedPainting(CurrentPainting.Id, c.ID);
             }
 
             // Copy the picture over. If it's a new one it gets copied, if an old one, I guess it gets overwritten?

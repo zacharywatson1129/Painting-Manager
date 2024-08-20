@@ -2,6 +2,7 @@
 
 using PaintingLibrary.Models;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -10,13 +11,13 @@ using System.Linq;
 
 namespace PaintingLibrary
 {
-    public class SqliteDataAccess
+    public class SqliteDataAccess : IDataAccess
     {
         /// <summary>
         /// Deletes the note with the matching id.
         /// </summary>
         /// <param name="id">Id of the note to delete.</param>
-        public static void deleteNote(int id)
+        public void deleteNote(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -29,7 +30,7 @@ namespace PaintingLibrary
         /// Loads all notes from the database.
         /// </summary>
         /// <returns>List of all notes in the database.</returns>
-        public static List<Note> loadAllNotes()
+        public List<Note> loadAllNotes()
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -37,32 +38,53 @@ namespace PaintingLibrary
                 return output;
             }
         }
-        
+
         /// <summary>
         /// Loads all paintings from the datbase and associates them with their categories.
         /// </summary>
         /// <returns>All paintings and their associated categories.</returns>
-        public static List<Painting> loadAllPaintings()
+        public List<Painting> loadAllPaintings()
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            var cnnStr = loadConnectionString();
+            
+            try
             {
-                // Output contains all paintings, regardless of how many categories they are in.
-                var output = cnn.Query<Painting>("select * from PaintingsTable", new DynamicParameters()).ToList();
-                
-                List<CategorizedPainting> categorizedPaintings = loadAllCategorizedPaintings();
-                List<Category> categories = loadAllCategories();
-                foreach (var cp in categorizedPaintings)
+                var MyFirstCnn = new SQLiteConnection(cnnStr);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            using (IDbConnection cnn = new SQLiteConnection(cnnStr))
+            {
+                try
                 {
-                    // First, we need the category for this row of the table.
-                    Category c = categories.Where((cat) => cat.ID == cp.CategoryID).First();
-                    
-                    // Now, locate the painting with the same ID as this row of the table.
-                    Painting found = output.Where((p) => p.Id == cp.PaintingID).First();
+                    // Output contains all paintings, regardless of how many categories they are in.
+                    var output = cnn.Query<Painting>("select * from PaintingsTable",
+                                                        new DynamicParameters()).ToList();
 
-                    // Now, match up the category to the correct painting in our output.
-                    // If bugs occur, this statement can be broken down, obviously.
-                    output.Where((p) => p.Equals(found)).First().Categories.Add(c);
+                    List<CategorizedPainting> categorizedPaintings = loadAllCategorizedPaintings();
+                    List<Category> categories = loadAllCategories();
+                    foreach (var cp in categorizedPaintings)
+                    {
+                        // First, find the corresponding category.
+                        Category c = categories.Where((cat) => cat.ID == cp.CategoryID).First();
+
+                        // Now, find the corresponding painting.
+                        Painting found = output.Where((p) => p.Id == cp.PaintingID).First();
+
+                        // Now, match up the category to the correct painting in our output.
+                        // If bugs occur, this statement can be broken down, obviously.
+                        output.Where((p) => p.Equals(found)).First().Categories.Add(c);
+                    }
+                    return output.ToList();
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                return new List<Painting>();
+                
 
                 /*for (int i = 0; i < categories.Count; i++)
                 {
@@ -89,33 +111,35 @@ namespace PaintingLibrary
                         }
                     }
                 }*/
+
+            /*from c in categories
+            select new Painting
+            {
+                Categories = c,
+                Products = c.ProductCategories.Select(pc => pc.Product).ToList()
+            }*/
+
+            /*foreach (CategorizedPainting categorizedPainting in categorizedPaintings)
+            {
+                //output.Join()
+                Painting p = output.Where((temp) => temp.Id == categorizedPainting.CategoryID).FirstOrDefault();
+                Category cat = categories.Where((c) => categorizedPainting.CategoryID == c.ID).FirstOrDefault();
+                p.Categories.Add(cat);
+            }*/
+
+
+            
                 
-                /*from c in categories
-                select new Painting
-                {
-                    Categories = c,
-                    Products = c.ProductCategories.Select(pc => pc.Product).ToList()
-                }*/
-
-                /*foreach (CategorizedPainting categorizedPainting in categorizedPaintings)
-                {
-                    //output.Join()
-                    Painting p = output.Where((temp) => temp.Id == categorizedPainting.CategoryID).FirstOrDefault();
-                    Category cat = categories.Where((c) => categorizedPainting.CategoryID == c.ID).FirstOrDefault();
-                    p.Categories.Add(cat);
-                }*/
-
-                return output.ToList();
             }
         }
 
-        public static void updatePainting(Painting painting)
+        public void updatePainting(Painting painting)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
                 string query = "update PaintingsTable set FileName = @FileName where Id = @Id";
                 var output = cnn.Execute(query, new { FileName = painting.FileName, Id = painting.Id });
-                
+
                 query = "update PaintingsTable set Name = @Name where Id = @Id";
                 output = cnn.Execute(query, new { Name = painting.Name, Id = painting.Id });
 
@@ -130,7 +154,7 @@ namespace PaintingLibrary
             }
         }
 
-        public static void deletePainting(int id)
+        public void deletePainting(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -148,8 +172,8 @@ namespace PaintingLibrary
         /// Remember to call loadAllNotes() to refresh and update the ID of the note passed.
         /// </summary>
         /// <param name="n">Note to add to the database.</param>
-        /// <returns>Whether or not the </returns>
-        public static bool SaveNote(Note n)
+        /// <returns>Whether or not the note was successfully added to database.</returns>
+        public bool SaveNote(Note n)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -159,17 +183,17 @@ namespace PaintingLibrary
         }
 
 
-        public static async void SaveNoteAsync(IProgress<bool> progress, Note n)
-        {
-            progress.Report(false);
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
-            {
-                int rows = await cnn.ExecuteAsync("insert into Notes (Description,Title) values (@Description,@Title)", n);
-                progress.Report(true);
-            }
-        }
+        //public async void SaveNoteAsync(IProgress<bool> progress, Note n)
+        //{
+        //    progress.Report(false);
+        //    using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+        //    {
+        //        int rows = await cnn.ExecuteAsync("insert into Notes (Description,Title) values (@Description,@Title)", n);
+        //        progress.Report(true);
+        //    }
+        //}
 
-        public static List<CategorizedPainting> loadAllCategorizedPaintings()
+        public List<CategorizedPainting> loadAllCategorizedPaintings()
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -179,13 +203,13 @@ namespace PaintingLibrary
             }
         }
 
-        public static DBQueryResult savePaintingAsync(Painting painting)
-        {
-            return null;
-            // throw new NotImplementedException();
-        }
+        //public static DBQueryResult savePaintingAsync(Painting painting)
+        //{
+        //    return null;
+        //    // throw new NotImplementedException();
+        //}
 
-        public static DBQueryResult savePainting(Painting painting)
+        public DBQueryResult savePainting(Painting painting)
         {
             DBQueryResult output = new DBQueryResult();
             /*
@@ -231,7 +255,7 @@ namespace PaintingLibrary
             return output;
         }
 
-        public static void saveCategorizedPainting(int paintingID, int categoryID)
+        public void saveCategorizedPainting(int paintingID, int categoryID)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -251,7 +275,7 @@ namespace PaintingLibrary
         /// Loads all categories from the database.
         /// </summary>
         /// <returns>A list of all categories in the database.</returns>
-        public static List<Category> loadAllCategories()
+        public List<Category> loadAllCategories()
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
@@ -270,7 +294,7 @@ namespace PaintingLibrary
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public static void clearCategoriesForPainting(int id)
+        public void clearCategoriesForPainting(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {

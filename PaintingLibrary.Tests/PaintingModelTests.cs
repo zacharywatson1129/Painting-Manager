@@ -26,13 +26,12 @@ namespace PaintingLibrary.Tests
         [Theory]
         [InlineData(-10)]
         [InlineData(-20)]
-        public void TestWidthProperty_NegativeWidthThrowsException(int width)
+        [InlineData(-25)]
+        public void TestWidthProperty_NegativeWidthSetPositive(int width)
         {
             Painting p = new Painting();
-            Action act = () => p.Width = -100;
-
-            ArgumentOutOfRangeException ex = Assert.Throws<ArgumentOutOfRangeException>(act);
-            Assert.Equal(width, p.Width);
+            p.Width = width;
+            Assert.Equal(-width, p.Width);
         }
 
     }

@@ -16,9 +16,11 @@ namespace PaintingDetailsManager.ViewModels
             (System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
             @"..\..\Images\"));
 
-        public GridViewModel()
+        private IDataAccess _dataAccess;
+        public GridViewModel(IDataAccess dataAccess)
         {
-            List<Painting> allPaintings = SqliteDataAccess.loadAllPaintings();
+            _dataAccess = dataAccess;
+            List<Painting> allPaintings = _dataAccess.loadAllPaintings();
             List<string> paths = new List<string>();
             foreach (Painting p in allPaintings)
             {
@@ -30,8 +32,8 @@ namespace PaintingDetailsManager.ViewModels
             }
             ImageList = new BindableCollection<string>(paths);
         }
-        private BindableCollection<string> _imageList;
 
+        private BindableCollection<string> _imageList;
         public BindableCollection<string> ImageList
         {
             get { return _imageList; }

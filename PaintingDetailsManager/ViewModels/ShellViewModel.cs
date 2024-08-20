@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 
 namespace PaintingDetailsManager.ViewModels
 {
-    [Export(typeof(IShell))]
-    public class ShellViewModel : Conductor<object>, IShell
+    public class ShellViewModel : Conductor<object>
     {
         const string IMG_DIALOG_FILTER = "All Image Files | *.*";
         readonly string imagesFolderPath = System.IO.Path.GetFullPath(System.IO.Path.Combine
@@ -22,14 +21,15 @@ namespace PaintingDetailsManager.ViewModels
             @"..\..\Images\"));
        
 
-        public ShellViewModel(SimpleContainer container, NotesViewModel notesVM, IEventAggregator events, IWindowManager windowManager)
+        public ShellViewModel(SimpleContainer container, NotesViewModel notesVM, 
+                                IEventAggregator events, IWindowManager windowManager)
         {
             _container = container;
             _notesVM = notesVM;
-            ActivateItem(_container.GetInstance<DefaultViewModel>());
             _events = events;
             _events.Subscribe(this);
             _windowManager = windowManager;
+            LoadDefaultView();
         }
 
         private SimpleContainer _container;

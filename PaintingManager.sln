@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingDetailsManager", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingLibrary", "PaintingLibrary\PaintingLibrary.csproj", "{414124B1-270A-4859-961B-46D57E169AEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_Demo", "WPF_Demo\WPF_Demo.csproj", "{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingLibrary.Tests", "PaintingLibrary.Tests\PaintingLibrary.Tests.csproj", "{9B792ACF-92F5-4A46-AD9B-D40043E39188}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{414124B1-270A-4859-961B-46D57E169AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{414124B1-270A-4859-961B-46D57E169AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{414124B1-270A-4859-961B-46D57E169AEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A56FB7C-A70E-47E5-8BEA-623DA512D3E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -213,7 +213,7 @@ namespace PaintingDetailsManager.ViewModels
             }            
             
             // Step 3 - TryClose();
-            TryClose();
+            TryCloseAsync();
         }
         public void ChangePicture()
         {

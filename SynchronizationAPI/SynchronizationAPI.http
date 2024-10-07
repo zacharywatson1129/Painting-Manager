@@ -1,0 +1,6 @@
+@SynchronizationAPI_HostAddress = http://localhost:5037
+
+GET {{SynchronizationAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

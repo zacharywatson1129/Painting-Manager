@@ -21,9 +21,9 @@ namespace PaintingDetailsManager.ViewModels
         }
         public Note CurrentItem { get; set; } = new Note();
 
-        protected override void OnDeactivate(bool close)
+        protected override Task OnDeactivateAsync(bool close, CancellationToken token)
         {
-            base.OnDeactivate(close);
+            return base.OnDeactivateAsync(close, token);
         }
 
         
@@ -54,7 +54,7 @@ namespace PaintingDetailsManager.ViewModels
             // We're not going to worry about a date and time for the note. This is enough.
             CurrentItem.Title = DateTime.Today.ToShortDateString() + " - " + CurrentItem.Title;
             _dataAccess.SaveNote(CurrentItem);
-            TryClose();
+            TryCloseAsync();
         }
 
         public bool validate()

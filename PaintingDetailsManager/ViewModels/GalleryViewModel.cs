@@ -319,7 +319,7 @@ namespace PaintingDetailsManager.ViewModels
         {
             EditPaintingViewModel vm = new EditPaintingViewModel(CurrentPainting.Id, _dataAccess);
             WindowManager manager = new WindowManager();
-            manager.ShowDialog(vm, null, null); 
+            manager.ShowDialogAsync(vm, null, null); 
             
             //SetPainting();
         }

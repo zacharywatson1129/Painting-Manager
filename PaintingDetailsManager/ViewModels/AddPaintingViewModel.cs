@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PaintingDetailsManager.ViewModels
@@ -193,13 +194,18 @@ namespace PaintingDetailsManager.ViewModels
             }            
             
             // Step 3 - TryClose();
-            TryClose();
+            TryCloseAsync();
         }
 
         public void Handle(AddPaintingEvent message)
         {
             CurrentPainting.FileName = message.PaintingFileImage.FileName;
             CurrentPaintingPath = message.PaintingFileImage.CompleteFilePath;
+        }
+
+        public Task HandleAsync(AddPaintingEvent message, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

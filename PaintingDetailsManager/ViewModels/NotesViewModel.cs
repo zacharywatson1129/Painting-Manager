@@ -85,7 +85,7 @@ namespace PaintingDetailsManager.ViewModels
 
             // manager.ShowWindow(vm, null, null);
             // manager.ShowDialog(vm, null, null);
-            manager.ShowDialog(vm, null, null); // Works except it needs to be a window.
+            manager.ShowDialogAsync(vm, null, null); // Works except it needs to be a window.
             LoadNotes();
             // AddNote(vm.CurrentItem);
 

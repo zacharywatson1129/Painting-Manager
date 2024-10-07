@@ -13,6 +13,8 @@ namespace PaintingLibrary
 {
     public class SqliteDataAccess : IDataAccess
     {
+        // TODO: Only load the connection string once, when the constructor is called. 
+
         /// <summary>
         /// Deletes the note with the matching id.
         /// </summary>

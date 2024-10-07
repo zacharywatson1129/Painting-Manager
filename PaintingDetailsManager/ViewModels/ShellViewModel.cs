@@ -39,7 +39,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void LoadDefaultView()
         {
-            ActivateItem(_container.GetInstance<DefaultViewModel>());
+            ActivateItemAsync(_container.GetInstance<DefaultViewModel>());
         }
 
         public void CreateNewImage()
@@ -60,7 +60,7 @@ namespace PaintingDetailsManager.ViewModels
                     {
                         AddPaintingViewModel vm = _container.GetInstance<AddPaintingViewModel>();
 
-                        _events.PublishOnUIThread(new AddPaintingEvent
+                        _events.PublishOnUIThreadAsync(new AddPaintingEvent
                             ( new PaintingLibrary.Models.FileImage()
                                 {
                                     FileName = openFileDialog.SafeFileName,
@@ -69,7 +69,7 @@ namespace PaintingDetailsManager.ViewModels
                             )
                         );
 
-                        _windowManager.ShowDialog(vm, null, null);
+                        _windowManager.ShowDialogAsync(vm, null, null);
                     }
                 }
                 catch (Exception ex)
@@ -88,19 +88,19 @@ namespace PaintingDetailsManager.ViewModels
             // We won't need a new instance each time because
             // we can't change the notes from any other view.
             // Might be a little faster anyway.
-            ActivateItem(_notesVM);
+            ActivateItemAsync(_notesVM);
         }
 
         public void LoadListView()
         {
             // Going to create a new instance each time since
             // we might need to reload the database anyway.
-            ActivateItem(_container.GetInstance<ListViewModel>());
+            ActivateItemAsync(_container.GetInstance<ListViewModel>());
         }
 
         public void LoadGalleryView()
         {
-            ActivateItem(_container.GetInstance<GalleryViewModel>());
+            ActivateItemAsync(_container.GetInstance<GalleryViewModel>());
         }
     }
 }

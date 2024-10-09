@@ -1,0 +1,107 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>main_icon.ico</ApplicationIcon>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="Static_Images\banner.jpg" />
+    <Resource Include="Fonts\Roboto\Roboto-Black.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-BlackItalic.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-Bold.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-BoldItalic.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-Italic.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-Light.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-LightItalic.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-Medium.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-MediumItalic.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-Regular.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-Thin.ttf" />
+    <Resource Include="Fonts\Roboto\Roboto-ThinItalic.ttf" />
+    <Resource Include="Fonts\Lato-Black.ttf" />
+    <Resource Include="Fonts\Lato-BlackItalic.ttf" />
+    <Resource Include="Fonts\Lato-Bold.ttf" />
+    <Resource Include="Fonts\Lato-BoldItalic.ttf" />
+    <Resource Include="Fonts\Lato-Italic.ttf" />
+    <Resource Include="Fonts\Lato-Light.ttf" />
+    <Resource Include="Fonts\Lato-LightItalic.ttf" />
+    <Resource Include="Fonts\Lato-Regular.ttf" />
+    <Resource Include="Fonts\Lato-Thin.ttf" />
+    <Resource Include="Fonts\Lato-ThinItalic.ttf" />
+    <Resource Include="Icons\iconmonstr-arrow-64-48.png" />
+    <Resource Include="Icons\iconmonstr-home-3-240.png" />
+    <Resource Include="Icons\iconmonstr-note-20-240.png" />
+    <Resource Include="Icons\iconmonstr-plus-2-240.png" />
+    <Resource Include="Icons\iconmonstr-picture-17-240.png" />
+    <Resource Include="Icons\iconmonstr-arrow-79-32.png" />
+    <Resource Include="Fonts\Roboto\LICENSE.txt" />
+    <Resource Include="Icons\iconmonstr-x-mark-4-48.png" />
+    <Resource Include="Icons\iconmonstr-minus-2-24.png" />
+    <Resource Include="Icons\iconmonstr-plus-2-24.png" />
+    <Resource Include="Icons\iconmonstr-trash-can-1-240.png" />
+    <Resource Include="Icons\iconmonstr-trash-can-1-24.png" />
+    <Resource Include="Icons\iconmonstr-menu-4-240.png" />
+    <Resource Include="Icons\NewNoteIcon.png" />
+    <Resource Include="Icons\iconmonstr-plus-2-240-green.png" />
+    <Resource Include="main_icon.ico" />
+    <Resource Include="Fonts\OFL.txt" />
+    <Content Include="paintings.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fonts\NewFolder1\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PaintingLibrary\PaintingLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Analyzers" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ApiExplorer" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.RazorPages" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.DiaSymReader.Native" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="System.ComponentModel.Composition" />
+    <PackageReference Include="System.Composition.AttributedModel" />
+    <PackageReference Include="System.Data.SQLite" />
+    <PackageReference Include="System.Data.SQLite.EF6" />
+    <PackageReference Include="Unity.Container" />
+    <PackageReference Include="System.Data.SQLite.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="InputDetails.xaml.cs" />
+    <Page Remove="InputDetails.xaml" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="PaintingDetailsManager.Views.AddPaintingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:views="clr-namespace:PaintingDetailsManager.Views" 
+             xmlns:viewmodels="clr-namespace:PaintingDetailsManager.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:AddPaintingViewModel}"
+             mc:Ignorable="d" Background="White" FontSize="16" 
+             d:DesignHeight="500" d:DesignWidth="650" 
+             FontFamily="/PaintingDetailsManager;component/Fonts/Roboto/#Roboto" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="4*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Padding="20" Foreground="White" FontSize="36" Grid.ColumnSpan="2" Text="Add New Painting"
+                   HorizontalAlignment="Stretch" 
+                   TextAlignment="Center" VerticalAlignment="Stretch" Background="#FF0050FF"/>
+
+        <Image Grid.Row="1" Source="{Binding CurrentPaintingPath}"
+               MaxWidth="350" MaxHeight="350"/>
+
+
+
+        <Grid Margin="10" Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            
+            <!--Painting Name-->
+            <TextBlock FontSize="16" Margin="0 10 0 0" VerticalAlignment="Bottom" Text="Painting Name:" Grid.Row="0" />
+            <TextBox Height="auto" FontSize="18" Grid.Row="1" x:Name="CurrentPainting_Name" Grid.ColumnSpan="2" />
+            
+            <!--Width and Height-->
+            <TextBlock FontSize="16" Margin="0 10 0 0" Grid.Row="2" VerticalAlignment="Bottom" Text="Width:" />
+            <views:NumberPicker Value="{Binding CurrentPainting.Width, Mode=TwoWay}" Margin="0 5 5 5"
+                                Minimum="1" Maximum="100" Grid.Row="3" />
+
+            <!--<TextBox Grid.Row="3" x:Name="CurrentPainting_Width" Margin="0 0 10 0" />-->
+            
+            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Text="Height:" />
+            <!--<TextBox Grid.Row="3" Grid.Column="1"  x:Name="CurrentPainting_Length" />-->
+
+            <views:NumberPicker Value="{Binding CurrentPainting.Height, Mode=TwoWay}" Margin="0 5"
+                          Grid.Column="1" Minimum="1" Maximum="100" Grid.Row="3" />
+
+            <TextBlock Grid.Row="4" VerticalAlignment="Center" Text="Date Painted:" />
+            <DatePicker VerticalContentAlignment="Center" Grid.Row="4" x:Name="datePickerControl"
+                        SelectedDate="{Binding DatePicker_Date, Mode=TwoWay}"
+                         Grid.Column="1" />
+            <!--Price-->
+            <TextBlock Grid.Row="5" VerticalAlignment="Center" Margin="0 10" Text="Price:" />
+            <TextBox Grid.Row="5" Height="auto" x:Name="CurrentPainting_Price" 
+                     FontSize="18" Grid.Column="1" />
+            
+            <!--Categories-->
+            <TextBlock Text="Categories:" Grid.Row="7"/>
+            <ListView Margin="0 10 10 0" Grid.Row="8" x:Name="AddedCategories"
+                      DisplayMemberPath="Name" SelectedItem="{Binding Path=AddedSelectedCategory,
+                                      Mode=OneWayToSource}"/>
+            <StackPanel Margin="0 10 0 0" Grid.Row="8" Grid.Column="1" Orientation="Vertical">
+                <ComboBox x:Name="Categories" SelectedItem="{Binding Path=SelectedCategory,
+                                      Mode=OneWayToSource}" DisplayMemberPath="Name" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="20 0" x:Name="AddCategory" Content="Add" />
+                    <Button Margin="5 0" x:Name="DeleteCategory" Content="Delete" />
+                </StackPanel>
+
+            </StackPanel>
+            <TextBlock Margin="0 10" VerticalAlignment="Center" Grid.Row="6" Text="Painting Surface: "/>
+            <ComboBox Height="30" x:Name="MySurfaceType" Grid.Row="6" Grid.Column="1"
+                      SelectedItem="{Binding Path=SelectedSurfaceType,
+                                      Mode=OneWayToSource}" SelectedValue="Choose painting surface" Margin="0,6"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="SavePainting" Margin="15">
+                Save Painting
+            </Button>
+        </Grid>
+
+    </Grid>
+</UserControl>

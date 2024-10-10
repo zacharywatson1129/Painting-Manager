@@ -1,5 +1,7 @@
 # Painting-Manager
 
+[![Build Status](https://dev.azure.com/zacharywatson1129/PaintingManager/_apis/build/status%2FPaintingManager?branchName=main)](https://dev.azure.com/zacharywatson1129/PaintingManager/_build/latest?definitionId=2&branchName=main)
+
 ## What it is and the Purpose
 This is a solution for keeping track of paintings. This project grew out of me trying to make a little extra money selling some of my landscape oil paintings. For management, 
 I was trying to literally glue small pictures, thumbnails, of my paintings into a spiral notebook and write down the dates I painted them, what size they were, and how much I wanted to charge for them, etc. Then I would mark if I sold them, the amount, etc. Eventually, I lost interest in actually making any real money out of my paintings but I still wanted a way to keep track of them and have an ordered gallery of my paintings, along with the details of the paintings. I also wanted to categorize them. I wanted a solution that did not involve writing dates or sizes on top of my pictures, nor try and work with the image details of the actual files, because that wouldn't work if I found a better or more up to date picture of a painting. So, the idea of building a painting manager was born, and I spent the greater part of a summer building this desktop application to do the job.

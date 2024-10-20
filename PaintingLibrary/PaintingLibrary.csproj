@@ -44,6 +44,7 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+	 <PackageReference Include="SQLite" Version="3.13.0" />  
     <Reference Include="SQLitePCLRaw.core, Version=2.1.6.2060, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.core.2.1.6\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
     </Reference>
@@ -93,7 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveDataProgressReport.cs" />
     <Compile Include="SaveDBProgress.cs" />
-    <Compile Include="SqliteDataAccess.cs" />
+    <Compile Include="SqliteDataAccess.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

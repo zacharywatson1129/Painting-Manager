@@ -123,14 +123,6 @@ jobs:
         publishLocation: 'Container'
         ArtifactType: 'Container'
 
-    - task: CmdLine@2
-      displayName: 'Listing Artifact Staging Directory (Detailed) Contents'
-      inputs:
-        script: |
-          echo "-----------Contents of the Artifact Staging Directory-----------"
-          dir /s D:\a\1\a
-          echo "-----------Contents of the PaintingDetailsManager folder inside the Artifact Staging Directory-----------"
-          dir /s D:\a\1\a\PaintingDetailsManager
 
     - task: GitHubRelease@0
       inputs:

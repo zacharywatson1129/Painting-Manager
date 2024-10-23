@@ -68,54 +68,35 @@ jobs:
           echo "Zipping files..."
           $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
           $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
-          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Release\bin'
 
           # Remove existing zip file if it exists
           if (Test-Path $outputPath) {
             Remove-Item $outputPath
           }
 
-          # Create a temporary directory to hold the structure for zipping
-          $tempZipDir = Join-Path $(Build.SourcesDirectory) 'TempZipDir'
-          New-Item -ItemType Directory -Path $tempZipDir -Force
-
-          # Create the Release/bin directory structure in the temp directory
-          $releaseDir = Join-Path $tempZipDir 'Release'
-          New-Item -ItemType Directory -Path $releaseDir -Force
-          $binDir = Join-Path $releaseDir 'bin'
-          New-Item -ItemType Directory -Path $binDir -Force
-
-          # Check if the bin folder exists before copying
-          if (Test-Path $binPath) {
-            echo "Copying files from $binPath to $binDir..."
-            Copy-Item -Path "$binPath\*" -Destination $binDir -Recurse -Force
-          } else {
-            echo "Warning: Bin path does not exist: $binPath"
+          # Ensure Data folder contains Working and Images
+          if (-Not (Test-Path "$dataPath\Working")) {
+            Write-Host "Error: Working directory does not exist."
+            exit 1
           }
 
-          # Check if the Data folder exists before copying
-          if (Test-Path $dataPath) {
-            echo "Copying files from $dataPath to $tempZipDir..."
-            Copy-Item -Path "$dataPath\*" -Destination (Join-Path $tempZipDir 'Data') -Recurse -Force
-          } else {
-            echo "Warning: Data path does not exist: $dataPath"
+          if (-Not (Test-Path "$dataPath\Images")) {
+            Write-Host "Error: Images directory does not exist."
+            exit 1
           }
 
-          # Log the contents of the TempZipDir for debugging
-          echo "Contents of TempZipDir before zipping:"
-          Get-ChildItem -Path $tempZipDir -Recurse
-
-          # Create the zip file from the temporary directory
-          if (Get-ChildItem -Path $tempZipDir -Recurse | Where-Object { $_.PSIsContainer -eq $false }) {
-            Compress-Archive -Path "$tempZipDir\*" -DestinationPath $outputPath
-          } else {
-            echo "Error: No files found in TempZipDir to zip."
+          # Check if bin folder exists
+          if (-Not (Test-Path $binPath)) {
+            Write-Host "Error: Bin directory does not exist."
+            exit 1
           }
 
-          # Clean up the temporary directory
-          Remove-Item -Path $tempZipDir -Recurse -Force
+          # Create a zip file containing the Data folder and bin folder
+          Compress-Archive -Path "$dataPath", "$binPath" -DestinationPath $outputPath
 
           echo "Zip file created at: $outputPath"
+
 
 
 

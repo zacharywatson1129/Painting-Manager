@@ -75,7 +75,10 @@ jobs:
             Remove-Item $outputPath
           }
 
-          # Ensure Data folder contains Working and Images
+          # List the contents of the Data directory for debugging
+          Get-ChildItem -Path $dataPath -Recurse
+
+          # Check if Data folder contains Working and Images
           if (-Not (Test-Path "$dataPath\Working")) {
             Write-Host "Error: Working directory does not exist."
             exit 1
@@ -85,6 +88,10 @@ jobs:
             Write-Host "Error: Images directory does not exist."
             exit 1
           }
+
+          # List the contents of the Release directory for debugging
+          $releasePath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Release'
+          Get-ChildItem -Path $releasePath -Recurse
 
           # Check if bin folder exists
           if (-Not (Test-Path $binPath)) {

@@ -66,21 +66,26 @@ jobs:
         targetType: 'inline'
         script: |
           echo "Zipping files..."
-          $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager'
-          if (-not (Test-Path -Path $outputPath)) {
-            New-Item -ItemType Directory -Path $outputPath
-          }
-          Add-Type -AssemblyName System.IO.Compression.FileSystem
-          $zipPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'
-          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\$(buildConfiguration)'
-          [System.IO.Compression.ZipFile]::CreateFromDirectory($binPath, $zipPath)
+          $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
+          $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
 
-          # Add Data folder
-          $dataPath = "$(Build.SourcesDirectory)\PaintingDetailsManager\Data"
-          $zip = [System.IO.Compression.ZipFile]::Open($zipPath, [System.IO.Compression.ZipArchiveMode]::Update)
-          $zip.CreateEntryFromFile("$dataPath\Working\paintings.db", "Data\Working\paintings.db")
-          $zip.CreateEntryFromDirectory($dataPath, "Data/")
+          # Remove existing zip file if it exists
+          if (Test-Path $outputPath) {
+            Remove-Item $outputPath
+          }
+
+          # Create a zip file containing the Data folder and the Release/bin folder
+          Compress-Archive -Path "$binPath\*", "$dataPath\*" -DestinationPath $outputPath
+
+          # Move the bin contents to the Release folder in the zip
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [System.IO.Compression.ZipFile]::Open($outputPath, [System.IO.Compression.ZipArchiveMode]::Update)
+          $zip.CreateEntryFromFile($binPath, "Release/bin/")  # This will place bin contents inside Release/bin/
           $zip.Dispose()
+
+          echo "Zip file created at: $outputPath"
+
 
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'

@@ -91,7 +91,7 @@ namespace PaintingDetailsManager.ViewModels
 
         readonly string imagesFolderPath = System.IO.Path.GetFullPath(System.IO.Path.Combine
             (System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-            @"..\..\Images\"));
+            @"..\..\Data\Images\"));
 
         public List<Category> Categories { get; set; }
 

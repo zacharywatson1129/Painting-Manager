@@ -286,6 +286,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Clean\" />
+    <Folder Include="Data\Images\" />
+    <Folder Include="Data\Working\" />
     <Folder Include="Fonts\NewFolder1\" />
     <Folder Include="Images\" />
   </ItemGroup>

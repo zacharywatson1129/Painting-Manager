@@ -18,7 +18,7 @@ namespace PaintingDetailsManager.ViewModels
         const string IMG_DIALOG_FILTER = "All Image Files | *.*";
         readonly string imagesFolderPath = System.IO.Path.GetFullPath(System.IO.Path.Combine
             (System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-            @"..\..\Images\"));
+            @"..\..\Data\Images\"));
        
 
         public ShellViewModel(SimpleContainer container, NotesViewModel notesVM, 

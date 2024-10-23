@@ -85,20 +85,32 @@ jobs:
           $binDir = Join-Path $releaseDir 'bin'
           New-Item -ItemType Directory -Path $binDir -Force
 
-          # Copy the contents of the bin folder to the temporary Release/bin folder
-          echo "Copying files from $binPath to $binDir..."
-          Copy-Item -Path "$binPath\*" -Destination $binDir -Recurse -Force
+          # Check if the bin folder exists before copying
+          if (Test-Path $binPath) {
+            echo "Copying files from $binPath to $binDir..."
+            Copy-Item -Path "$binPath\*" -Destination $binDir -Recurse -Force
+          } else {
+            echo "Warning: Bin path does not exist: $binPath"
+          }
 
-          # Copy the Data folder to the temporary directory
-          echo "Copying files from $dataPath to $tempZipDir..."
-          Copy-Item -Path "$dataPath\*" -Destination (Join-Path $tempZipDir 'Data') -Recurse -Force
+          # Check if the Data folder exists before copying
+          if (Test-Path $dataPath) {
+            echo "Copying files from $dataPath to $tempZipDir..."
+            Copy-Item -Path "$dataPath\*" -Destination (Join-Path $tempZipDir 'Data') -Recurse -Force
+          } else {
+            echo "Warning: Data path does not exist: $dataPath"
+          }
 
           # Log the contents of the TempZipDir for debugging
           echo "Contents of TempZipDir before zipping:"
           Get-ChildItem -Path $tempZipDir -Recurse
 
           # Create the zip file from the temporary directory
-          Compress-Archive -Path "$tempZipDir\*" -DestinationPath $outputPath
+          if (Get-ChildItem -Path $tempZipDir -Recurse | Where-Object { $_.PSIsContainer -eq $false }) {
+            Compress-Archive -Path "$tempZipDir\*" -DestinationPath $outputPath
+          } else {
+            echo "Error: No files found in TempZipDir to zip."
+          }
 
           # Clean up the temporary directory
           Remove-Item -Path $tempZipDir -Recurse -Force

@@ -68,7 +68,7 @@ jobs:
           echo "Zipping files..."
           $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
           $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
-          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin'
 
           # Remove existing zip file if it exists
           if (Test-Path $outputPath) {

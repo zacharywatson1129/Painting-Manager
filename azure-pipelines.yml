@@ -28,6 +28,7 @@ jobs:
         restoreSolution: '$(solution)'
         verbosityRestore: 'Detailed'
         packagesDirectory: '$(Build.SourcesDirectory)\packages'
+
     - task: VSBuild@1
       displayName: 'Clean and Build Library'
       inputs:
@@ -42,12 +43,28 @@ jobs:
         configuration: '$(buildConfiguration)'
 
     - task: CmdLine@2
-      displayName: 'AFTER Building WPf Project - Listing PaintingDetailsManager\bin\Release Folder (Detailed) Contents'
+      displayName: 'AFTER Building WPF Project - Listing PaintingDetailsManager\bin\Release Folder (Detailed) Contents'
       inputs:
         script: |
           echo "-----------Contents of the PaintingDetailsManager\bin\Release Directory-----------"
           dir /s $(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release
 
+    # Step to ensure Data/Working and Data/Images folders exist
+    - script: |
+        echo "Creating necessary folders in Data directory..."
+        mkdir -p $(Build.SourcesDirectory)\Data\Working
+        mkdir -p $(Build.SourcesDirectory)\Data\Images
+      displayName: 'Ensure Data/Working and Data/Images Folders Exist'
+
+    # Step to copy the clean database into the working folder
+    - task: CopyFiles@2
+      displayName: 'Copy Clean Database to Working Folder'
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)\Data\Clean'
+        Contents: 'paintings.db'
+        TargetFolder: '$(Build.SourcesDirectory)\Data\Working'
+
+    # Step to create the zip file
     - task: PowerShell@2
       displayName: 'Create Zip File'
       inputs:
@@ -59,15 +76,15 @@ jobs:
             New-Item -ItemType Directory -Path $outputPath
           }
           Add-Type -AssemblyName System.IO.Compression.FileSystem
-          [System.IO.Compression.ZipFile]::CreateFromDirectory('$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release', '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip')
-    
+          # Adjusted to include Data folder at the right level
+          [System.IO.Compression.ZipFile]::CreateFromDirectory('$(Build.SourcesDirectory)', '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip')
+
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'
       inputs:
         script: |
           echo "Checking contents of the zip file..."
           tar -tf "$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip"
-
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish WPF Artifacts'

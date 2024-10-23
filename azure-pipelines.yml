@@ -74,27 +74,16 @@ jobs:
           $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
           $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
 
-          # Create the zip file containing both Data and bin directories
+          # Remove existing zip file if it exists
           if (Test-Path $outputPath) {
             Remove-Item $outputPath
           }
 
-          # Create a temporary folder for zipping
-          $tempFolder = Join-Path -Path $(Build.ArtifactStagingDirectory) -ChildPath 'tempZip'
-          New-Item -ItemType Directory -Path $tempFolder
+          # Create a zip file containing the Data folder and bin folder
+          Compress-Archive -Path $dataPath, $binPath -DestinationPath $outputPath
 
-          # Copy Data folder into temporary zip folder
-          Copy-Item -Path $dataPath\* -Destination $tempFolder -Recurse
-          
-          # Copy bin folder into temporary zip folder
-          Copy-Item -Path $binPath\* -Destination (Join-Path -Path $tempFolder -ChildPath 'bin') -Recurse
-          
-          # Now zip the temporary folder
-          Add-Type -AssemblyName System.IO.Compression.FileSystem
-          [System.IO.Compression.ZipFile]::CreateFromDirectory($tempFolder, $outputPath)
+          echo "Zip file created at: $outputPath"
 
-          # Clean up temporary folder
-          Remove-Item -Path $tempFolder -Recurse -Force
 
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'

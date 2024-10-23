@@ -41,25 +41,24 @@ jobs:
         solution: 'PaintingDetailsManager/PaintingDetailsManager.csproj'
         configuration: '$(buildConfiguration)'
 
-    - task: PowerShell@2
+    - task: CmdLine@2
       displayName: 'Ensure Data/Working and Data/Images Folders Exist'
+      inputs:
+        script: |
+          echo "Creating necessary folders in Data directory..."
+          if not exist "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working" (
+              mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working"
+          )
+          if not exist "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images" (
+              mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images"
+          )
+
+    - task: PowerShell@2
+      displayName: 'Copy Clean Database to Working Directory'
       inputs:
         targetType: 'inline'
         script: |
-          echo "Creating necessary folders in Data directory..."
-          if (-not (Test-Path -Path "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working")) {
-              New-Item -ItemType Directory -Path "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working"
-          }
-          if (-not (Test-Path -Path "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images")) {
-              New-Item -ItemType Directory -Path "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images"
-          }
-
-    - task: CopyFiles@2
-      displayName: 'Copy Clean Database to Working Directory'
-      inputs:
-        SourceFolder: '$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Clean'
-        Contents: 'paintings.db'
-        TargetFolder: '$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working'
+          Copy-Item "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Clean\paintings.db" "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working\paintings.db" -Force
 
     - task: PowerShell@2
       displayName: 'Create Zip File'
@@ -69,12 +68,19 @@ jobs:
           echo "Zipping files..."
           $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager'
           if (-not (Test-Path -Path $outputPath)) {
-              New-Item -ItemType Directory -Path $outputPath
+            New-Item -ItemType Directory -Path $outputPath
           }
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           $zipPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'
-          $sourceDir = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
-          [System.IO.Compression.ZipFile]::CreateFromDirectory($sourceDir, $zipPath)
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\$(buildConfiguration)'
+          [System.IO.Compression.ZipFile]::CreateFromDirectory($binPath, $zipPath)
+
+          # Add Data folder
+          $dataPath = "$(Build.SourcesDirectory)\PaintingDetailsManager\Data"
+          $zip = [System.IO.Compression.ZipFile]::Open($zipPath, [System.IO.Compression.ZipArchiveMode]::Update)
+          $zip.CreateEntryFromFile("$dataPath\Working\paintings.db", "Data\Working\paintings.db")
+          $zip.CreateEntryFromDirectory($dataPath, "Data/")
+          $zip.Dispose()
 
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'

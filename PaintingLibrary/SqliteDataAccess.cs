@@ -225,19 +225,29 @@ namespace PaintingLibrary
 
             SQLiteCommand Command = new SQLiteCommand("", cnn);
 
-            Command.CommandText = "insert into PaintingsTable (Name,FileName,Width,Length,DatePainted,Price, PaintingSurface) values (@Name,@FileName,@Width,@Length,@DatePainted,@Price,@PaintingSurface)";
+            Command.CommandText = "insert into PaintingsTable (Name,FileName,Width,Height,DatePainted,Price,PaintingSurface) values (@Name,@FileName,@Width,@Height,@DatePainted,@Price,@PaintingSurface)";
 
             Command.CommandType = System.Data.CommandType.Text;
 
             Command.Parameters.Add(new SQLiteParameter("@Name", painting.Name));
             Command.Parameters.Add(new SQLiteParameter("@FileName", painting.FileName));
             Command.Parameters.Add(new SQLiteParameter("@Width", painting.Width));
-            Command.Parameters.Add(new SQLiteParameter("@Length", painting.Height));
+            Command.Parameters.Add(new SQLiteParameter("@Height", painting.Height));
             Command.Parameters.Add(new SQLiteParameter("@DatePainted", painting.DatePainted));
             Command.Parameters.Add(new SQLiteParameter("@Price", painting.Price));
             Command.Parameters.Add(new SQLiteParameter("@PaintingSurface", painting.PaintingSurface));
 
-            int Status = Command.ExecuteNonQuery();
+            int Status = 0;
+            try
+            {
+                Status = Command.ExecuteNonQuery();
+            }
+            catch (Exception ex) 
+            {
+                int a = 5;
+            }
+            
+
 
             Command.CommandText = "select last_insert_rowid()";
 

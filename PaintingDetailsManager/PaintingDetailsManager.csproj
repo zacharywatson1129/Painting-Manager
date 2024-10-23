@@ -286,7 +286,6 @@
     <Folder Include="Data\Images\" />
     <Folder Include="Data\Working\" />
     <Folder Include="Fonts\NewFolder1\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PaintingLibrary\PaintingLibrary.csproj">

@@ -343,4 +343,5 @@ images/*
 
 PaintingDetailsManager/Data/Working
 
-PaintingDetailsManager/Data/Images
+PaintingDetailsManager/Data/Images/*
+!PaintingDetailsManager/Data/Images/.gitkeep

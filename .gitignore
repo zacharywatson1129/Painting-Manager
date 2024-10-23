@@ -341,6 +341,6 @@ healthchecksdb
 
 images/*
 
-PaintingDetailsManager/Data/Clean
+PaintingDetailsManager/Data/Working
 
 PaintingDetailsManager/Data/Images

@@ -82,13 +82,20 @@ jobs:
           # Create the Release/bin directory structure in the temp directory
           $releaseDir = Join-Path $tempZipDir 'Release'
           New-Item -ItemType Directory -Path $releaseDir -Force
-          New-Item -ItemType Directory -Path (Join-Path $releaseDir 'bin') -Force
+          $binDir = Join-Path $releaseDir 'bin'
+          New-Item -ItemType Directory -Path $binDir -Force
 
           # Copy the contents of the bin folder to the temporary Release/bin folder
-          Copy-Item -Path "$binPath\*" -Destination (Join-Path $releaseDir 'bin') -Recurse
+          echo "Copying files from $binPath to $binDir..."
+          Copy-Item -Path "$binPath\*" -Destination $binDir -Recurse -Force
 
           # Copy the Data folder to the temporary directory
-          Copy-Item -Path "$dataPath\*" -Destination (Join-Path $tempZipDir 'Data') -Recurse
+          echo "Copying files from $dataPath to $tempZipDir..."
+          Copy-Item -Path "$dataPath\*" -Destination (Join-Path $tempZipDir 'Data') -Recurse -Force
+
+          # Log the contents of the TempZipDir for debugging
+          echo "Contents of TempZipDir before zipping:"
+          Get-ChildItem -Path $tempZipDir -Recurse
 
           # Create the zip file from the temporary directory
           Compress-Archive -Path "$tempZipDir\*" -DestinationPath $outputPath

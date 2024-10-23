@@ -41,9 +41,10 @@ jobs:
         solution: 'PaintingDetailsManager/PaintingDetailsManager.csproj'
         configuration: '$(buildConfiguration)'
 
-    - task: CmdLine@2
+    - task: PowerShell@2
       displayName: 'Ensure Data/Working and Data/Images Folders Exist'
       inputs:
+        targetType: 'inline'
         script: |
           echo "Creating necessary folders in Data directory..."
           if (-not (Test-Path -Path "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working")) {
@@ -72,7 +73,8 @@ jobs:
           }
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           $zipPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'
-          [System.IO.Compression.ZipFile]::CreateFromDirectory('$(Build.ArtifactStagingDirectory)', $zipPath)
+          $sourceDir = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
+          [System.IO.Compression.ZipFile]::CreateFromDirectory($sourceDir, $zipPath)
 
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'

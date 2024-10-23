@@ -132,4 +132,4 @@ jobs:
         tagSource: 'manual'  # You can also choose 'build' if you want it to auto-tag
         tag: 'v$(Build.BuildId)'
         title: 'Release $(Build.BuildId)'
-        assets: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'  # Point to your zip
+        assets: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'  # Point to your zip

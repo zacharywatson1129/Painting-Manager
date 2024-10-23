@@ -46,8 +46,16 @@ jobs:
       inputs:
         script: |
           echo "Creating necessary folders in Data directory..."
-          mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working" -Force
-          mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images" -Force
+          if not exist "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working" (
+            mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working"
+          ) else (
+            echo "Working folder already exists."
+          )
+          if not exist "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images" (
+            mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images"
+          ) else (
+            echo "Images folder already exists."
+          )
 
     - task: CopyFiles@2
       displayName: 'Copy Clean Database to Working Directory'

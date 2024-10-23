@@ -112,7 +112,8 @@ jobs:
       inputs:
         script: |
           echo "Checking contents of the zip file..."
-          tar -tf "$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip"
+          tar -tf "$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip"
+
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish WPF Artifacts'

@@ -1,7 +1,5 @@
 trigger:
-  branches:
-    include:
-      - main
+  none
 
 pr:
   branches:
@@ -44,11 +42,23 @@ jobs:
         configuration: '$(buildConfiguration)'
 
     - task: CmdLine@2
-      displayName: 'AFTER Building WPf Project - Listing PaintingDetailsManager\bin\Release Folder (Detailed) Contents'
+      displayName: 'Ensure Data/Working and Data/Images Folders Exist'
       inputs:
         script: |
-          echo "-----------Contents of the PaintingDetailsManager\bin\Release Directory-----------"
-          dir /s $(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release
+          echo "Creating necessary folders in Data directory..."
+          if not exist "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working" (
+              mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working"
+          )
+          if not exist "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images" (
+              mkdir "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Images"
+          )
+
+    - task: PowerShell@2
+      displayName: 'Copy Clean Database to Working Directory'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Copy-Item "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Clean\paintings.db" "$(Build.SourcesDirectory)\PaintingDetailsManager\Data\Working\paintings.db" -Force
 
     - task: PowerShell@2
       displayName: 'Create Zip File'
@@ -56,37 +66,63 @@ jobs:
         targetType: 'inline'
         script: |
           echo "Zipping files..."
-          $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager'
-          if (-not (Test-Path -Path $outputPath)) {
-            New-Item -ItemType Directory -Path $outputPath
+          $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
+          $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin'
+
+          # Remove existing zip file if it exists
+          if (Test-Path $outputPath) {
+            Remove-Item $outputPath
           }
-          Add-Type -AssemblyName System.IO.Compression.FileSystem
-          [System.IO.Compression.ZipFile]::CreateFromDirectory('$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release', '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip')
-    
+
+          # List the contents of the Data directory for debugging
+          Get-ChildItem -Path $dataPath -Recurse
+
+          # Check if Data folder contains Working and Images
+          if (-Not (Test-Path "$dataPath\Working")) {
+            Write-Host "Error: Working directory does not exist."
+            exit 1
+          }
+
+          if (-Not (Test-Path "$dataPath\Images")) {
+            Write-Host "Error: Images directory does not exist."
+            exit 1
+          }
+
+          # List the contents of the Release directory inside bin for debugging
+          Get-ChildItem -Path $binPath -Recurse
+
+          # Check if bin\Release folder exists
+          if (-Not (Test-Path $binPath)) {
+            Write-Host "Error: Bin/Release directory does not exist."
+            exit 1
+          }
+
+          # Create a zip file containing the Data folder and bin/Release folder
+          Compress-Archive -Path "$dataPath", "$binPath" -DestinationPath $outputPath
+
+          echo "Zip file created at: $outputPath"
+
+
+
+
+
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'
       inputs:
         script: |
           echo "Checking contents of the zip file..."
-          tar -tf "$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip"
+          tar -tf "$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip"
 
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish WPF Artifacts'
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
         ArtifactName: 'PaintingDetailsManager'
         publishLocation: 'Container'
         ArtifactType: 'Container'
 
-    - task: CmdLine@2
-      displayName: 'Listing Artifact Staging Directory (Detailed) Contents'
-      inputs:
-        script: |
-          echo "-----------Contents of the Artifact Staging Directory-----------"
-          dir /s D:\a\1\a
-          echo "-----------Contents of the PaintingDetailsManager folder inside the Artifact Staging Directory-----------"
-          dir /s D:\a\1\a\PaintingDetailsManager
 
     - task: GitHubRelease@0
       inputs:
@@ -96,4 +132,4 @@ jobs:
         tagSource: 'manual'  # You can also choose 'build' if you want it to auto-tag
         tag: 'v$(Build.BuildId)'
         title: 'Release $(Build.BuildId)'
-        assets: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'  # Point to your zip
+        assets: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'  # Point to your zip

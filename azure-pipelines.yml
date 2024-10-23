@@ -118,7 +118,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish WPF Artifacts'
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager\PaintingDetailsManager.zip'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
         ArtifactName: 'PaintingDetailsManager'
         publishLocation: 'Container'
         ArtifactType: 'Container'

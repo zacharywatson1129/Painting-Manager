@@ -68,7 +68,7 @@ jobs:
           echo "Zipping files..."
           $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
           $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
-          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Release\bin'
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
 
           # Remove existing zip file if it exists
           if (Test-Path $outputPath) {
@@ -89,20 +89,20 @@ jobs:
             exit 1
           }
 
-          # List the contents of the Release directory for debugging
-          $releasePath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Release'
-          Get-ChildItem -Path $releasePath -Recurse
+          # List the contents of the Release directory inside bin for debugging
+          Get-ChildItem -Path $binPath -Recurse
 
-          # Check if bin folder exists
+          # Check if bin\Release folder exists
           if (-Not (Test-Path $binPath)) {
-            Write-Host "Error: Bin directory does not exist."
+            Write-Host "Error: Bin/Release directory does not exist."
             exit 1
           }
 
-          # Create a zip file containing the Data folder and bin folder
+          # Create a zip file containing the Data folder and bin/Release folder
           Compress-Archive -Path "$dataPath", "$binPath" -DestinationPath $outputPath
 
           echo "Zip file created at: $outputPath"
+
 
 
 

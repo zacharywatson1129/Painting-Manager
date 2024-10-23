@@ -50,15 +50,30 @@ jobs:
           dir /s $(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release
 
     # Step to ensure Data/Working and Data/Images folders exist
-    - script: |
-        echo "Creating necessary folders in Data directory..."
-        if (-not (Test-Path -Path "$(Build.SourcesDirectory)\Data\Working")) {
-            New-Item -ItemType Directory -Path "$(Build.SourcesDirectory)\Data\Working"
-        }
-        if (-not (Test-Path -Path "$(Build.SourcesDirectory)\Data\Images")) {
-            New-Item -ItemType Directory -Path "$(Build.SourcesDirectory)\Data\Images"
-        }
+    - task: PowerShell@2
       displayName: 'Ensure Data/Working and Data/Images Folders Exist'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "Creating necessary folders in Data directory..."
+          $workingDir = "$(Build.SourcesDirectory)\Data\Working"
+          $imagesDir = "$(Build.SourcesDirectory)\Data\Images"
+
+          # Create Working directory if it doesn't exist
+          if (-not (Test-Path -Path $workingDir)) {
+              New-Item -ItemType Directory -Path $workingDir | Out-Null
+              Write-Host "Created Working directory."
+          } else {
+              Write-Host "Working directory already exists."
+          }
+
+          # Create Images directory if it doesn't exist
+          if (-not (Test-Path -Path $imagesDir)) {
+              New-Item -ItemType Directory -Path $imagesDir | Out-Null
+              Write-Host "Created Images directory."
+          } else {
+              Write-Host "Images directory already exists."
+          }
 
     # Step to copy the clean database into the working folder
     - task: CopyFiles@2

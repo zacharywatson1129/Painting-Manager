@@ -72,29 +72,29 @@ jobs:
           echo "Zipping files..."
           $outputPath = '$(Build.ArtifactStagingDirectory)\PaintingDetailsManager.zip'
           $dataPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\Data'
-          # Create the zip file containing the Data folder at the root level
+          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
+
+          # Create the zip file containing both Data and bin directories
           if (Test-Path $outputPath) {
             Remove-Item $outputPath
           }
-          Add-Type -AssemblyName System.IO.Compression.FileSystem
-          [System.IO.Compression.ZipFile]::CreateFromDirectory($dataPath, $outputPath)
+
+          # Create a temporary folder for zipping
+          $tempFolder = Join-Path -Path $(Build.ArtifactStagingDirectory) -ChildPath 'tempZip'
+          New-Item -ItemType Directory -Path $tempFolder
+
+          # Copy Data folder into temporary zip folder
+          Copy-Item -Path $dataPath\* -Destination $tempFolder -Recurse
           
-          # Now add the bin directory to the zip file
+          # Copy bin folder into temporary zip folder
+          Copy-Item -Path $binPath\* -Destination (Join-Path -Path $tempFolder -ChildPath 'bin') -Recurse
+          
+          # Now zip the temporary folder
           Add-Type -AssemblyName System.IO.Compression.FileSystem
-          $binPath = '$(Build.SourcesDirectory)\PaintingDetailsManager\bin\Release'
-          $tempZipPath = '$(Build.ArtifactStagingDirectory)\temp.zip'
+          [System.IO.Compression.ZipFile]::CreateFromDirectory($tempFolder, $outputPath)
 
-          # Create a temporary zip file that combines both Data and bin directories
-          [System.IO.Compression.ZipFile]::CreateFromDirectory($dataPath, $tempZipPath)
-
-          # Open the temporary zip and add the bin folder
-          $zip = [System.IO.Compression.ZipFile]::Open($tempZipPath, [System.IO.Compression.ZipArchiveMode]::Update)
-          $zip.CreateEntryFromFile("$binPath\*","bin/")
-          $zip.Dispose()
-
-          # Move the combined zip to final destination
-          Move-Item $tempZipPath $outputPath
-
+          # Clean up temporary folder
+          Remove-Item -Path $tempFolder -Recurse -Force
 
     - task: CmdLine@2
       displayName: 'Check Zip File Contents'

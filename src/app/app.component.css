@@ -1,0 +1,10 @@
+.nav-bar {
+    background-color: red;
+    padding: 10px;
+}
+
+.nav-bar a {
+
+    font-size: x-large;
+    padding: 10px;
+}

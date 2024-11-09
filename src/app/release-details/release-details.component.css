@@ -1,0 +1,27 @@
+
+.release-detail {
+    /*background-color: #00bd55;*/
+    background-image: linear-gradient(to bottom right, rgb(190, 190, 190), rgb(131, 152, 180));
+    border-radius: 15px;
+    width: 45%;
+    margin: auto;
+    margin-top: 20px;
+    padding-bottom: 10px;
+}
+
+p {
+    margin-bottom: 5px;
+}
+
+.download-link {
+    color: darkblue;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-right: 65px;
+    padding-bottom: 10px;
+    
+}
+
+.release-info {
+    padding: 15px 35px;
+}

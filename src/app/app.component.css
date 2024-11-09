@@ -1,6 +1,7 @@
 .nav-bar {
     background-color: red;
     padding: 10px;
+    
 }
 
 .nav-bar a {
@@ -8,3 +9,26 @@
     font-size: x-large;
     padding: 10px;
 }
+
+nav ul li {
+    float: left;
+}
+
+.myNav {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 10px;
+    border-radius: 12px;
+}
+
+.main-logo {
+    margin: 5px 15px;
+}
+
+.myNav .navbar-brand {
+    font-size: 1.7rem; /* Increase the font size of the brand name */
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 1.3rem; /* Adjust the font size to make it bigger */
+  }

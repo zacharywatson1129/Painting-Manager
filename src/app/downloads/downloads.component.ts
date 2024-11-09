@@ -11,8 +11,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterModule, CommonModule, ReleaseDetailsComponent],
   template: `
-    <h1>
-      Welcome to the Downloads Page. The Releases are listed here!!
+    <h1 class="display-2 text-center">
+      Painting Manager Downloads
     </h1>
 
     <release-details *ngFor="let release of releaseData"

@@ -115,7 +115,7 @@ namespace PaintingDetailsManager.ViewModels
             }
         }
 
-        private string _sizeAndSurface;
+        // private string _sizeAndSurface;
         public string SizeAndSurface
         {
             get { return $"{ CurrentPainting.Width} x {CurrentPainting.Height} on {CurrentPainting.PaintingSurface}"; }

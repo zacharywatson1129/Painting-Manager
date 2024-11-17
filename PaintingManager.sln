@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaintingManager", "PaintingManager\PaintingManager.csproj", "{F9500C10-EFB6-4715-A270-64060310A9B7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingDetailsManager", "PaintingDetailsManager\PaintingDetailsManager.csproj", "{83044D0C-0D8D-4CB9-8AB5-38E955B3968F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingLibrary", "PaintingLibrary\PaintingLibrary.csproj", "{414124B1-270A-4859-961B-46D57E169AEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaintingLibrary", "PaintingLibrary\PaintingLibrary.csproj", "{414124B1-270A-4859-961B-46D57E169AEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaintingLibrary.Tests", "PaintingLibrary.Tests\PaintingLibrary.Tests.csproj", "{9B792ACF-92F5-4A46-AD9B-D40043E39188}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C741A35-F142-40B5-9213-234D7C9FB3CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorHybridMAUIApp", "BlazorHybridMAUIApp\BlazorHybridMAUIApp.csproj", "{2C996FDD-BD91-48FF-AE90-8F6259504634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynchronizationAPI", "SynchronizationAPI\SynchronizationAPI.csproj", "{9C4A32B3-5A22-4B34-8702-EBAAF1EEED15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F9500C10-EFB6-4715-A270-64060310A9B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9500C10-EFB6-4715-A270-64060310A9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9500C10-EFB6-4715-A270-64060310A9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9500C10-EFB6-4715-A270-64060310A9B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83044D0C-0D8D-4CB9-8AB5-38E955B3968F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83044D0C-0D8D-4CB9-8AB5-38E955B3968F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83044D0C-0D8D-4CB9-8AB5-38E955B3968F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,6 +33,16 @@ Global
 		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B792ACF-92F5-4A46-AD9B-D40043E39188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C996FDD-BD91-48FF-AE90-8F6259504634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C996FDD-BD91-48FF-AE90-8F6259504634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C996FDD-BD91-48FF-AE90-8F6259504634}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2C996FDD-BD91-48FF-AE90-8F6259504634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C996FDD-BD91-48FF-AE90-8F6259504634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C996FDD-BD91-48FF-AE90-8F6259504634}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9C4A32B3-5A22-4B34-8702-EBAAF1EEED15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C4A32B3-5A22-4B34-8702-EBAAF1EEED15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C4A32B3-5A22-4B34-8702-EBAAF1EEED15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C4A32B3-5A22-4B34-8702-EBAAF1EEED15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

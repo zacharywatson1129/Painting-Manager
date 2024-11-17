@@ -1,0 +1,44 @@
+﻿@page "/"
+
+@inject SqliteDataAccess DataAccess
+
+<h1 class="display-3">Home</h1>
+
+<button class="btn btn-primary">Add Painting</button>
+<!--<button class="btn btn-primary">View Gallery</button>-->
+
+
+
+<Gallery></Gallery>
+<p>Database connection status: @statusMessage</p>
+<p>Directory info: @dirInfo</p>
+
+@code {
+    private string statusMessage;
+    private string dirInfo = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        // Example usage of DataAccess
+        try
+        {
+            
+            DataAccess.InitializeDatabase();
+            var notes = DataAccess.loadAllNotes(); // Example method call
+            statusMessage = $"Loaded {notes.Count} notes successfully!";
+        }
+        catch (Exception ex)
+        {
+            statusMessage = $"Error loading notes: {ex.Message}";
+            if (ex.InnerException != null)
+            {
+                statusMessage += "\n" + ex.InnerException.Message;
+            }
+        }
+
+        string pathToInspect = FileSystem.AppDataDirectory; // or specify your database directory path
+
+        DirectoryHelper.PrintDirectoryStructure(pathToInspect);
+    }
+}

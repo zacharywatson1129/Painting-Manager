@@ -3,6 +3,7 @@ using PaintingDetailsManager.ViewModels;
 using PaintingLibrary;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +34,18 @@ namespace PaintingDetailsManager
             // only need ONE window manager and one event aggregator.
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<IDataAccess, SqliteDataAccess>();
+                .Singleton<IEventAggregator, EventAggregator>();
+
+            string connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+
+            // Register SqliteDataAccess with the connection string passed into its constructor
+            SqliteDataAccess sqliteDataAccess = new SqliteDataAccess(connectionString);
+
+            _container.Instance(sqliteDataAccess);
+
+
+
+            _container.Instance<IDataAccess>(sqliteDataAccess);
 
             // Don't want to use a reflection a lot because of performance
             // but it won't hurt to do it once at startup.
@@ -52,7 +63,22 @@ namespace PaintingDetailsManager
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ShellViewModel>();           
+            try
+            {
+                DisplayRootViewFor<ShellViewModel>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException);
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        Console.WriteLine(ex.InnerException.InnerException);
+                    }
+                }
+            }
         }
 
         protected override object GetInstance(Type service, string key)

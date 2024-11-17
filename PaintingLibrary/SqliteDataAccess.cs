@@ -6,20 +6,65 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PaintingLibrary
 {
     public class SqliteDataAccess : IDataAccess
     {
+
+        private string connectionString = string.Empty;
+
+        public SqliteDataAccess(string cnnString)
+        {
+            connectionString = cnnString;
+        }
+
+        public void InitializeDatabase()
+        {
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
+            {
+                // 1. Create the PaintingsTable Table
+                var sqlStatement = @"CREATE TABLE IF NOT EXISTS PaintingsTable (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                                                + "Name TEXT NOT NULL, "
+                                                + "FileName  TEXT NOT NULL, "
+                                                + "Width INTEGER NOT NULL, "
+                                                + "Height    INTEGER NOT NULL, "
+                                                + "DatePainted TEXT, "
+                                                + "Price REAL, "
+                                                + "PaintingSurface TEXT)";
+                cnn.Execute(sqlStatement);
+
+                // 2. Create the Categories Table
+                sqlStatement = @"CREATE TABLE IF NOT EXISTS Categories (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name TEXT NOT NULL)";
+                cnn.Execute(sqlStatement);
+
+                // 3. Create the CategorizedPaintings Table
+                sqlStatement = @"CREATE TABLE IF NOT EXISTS CategorizedPaintings ("
+                                                + "CategoryID INTEGER, "
+                                                + "PaintingID INTEGER, "
+                                                + "FOREIGN KEY(CategoryID) REFERENCES Categories(Id), "
+                                                + "FOREIGN KEY(PaintingID) REFERENCES PaintingsTable(Id))";
+                cnn.Execute(sqlStatement);
+
+                // 4. Create the Notes Table
+                sqlStatement = @"CREATE TABLE IF NOT EXISTS Notes (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                                                + "Title TEXT NOT NULL, "
+                                                + "Description TEXT);";
+                cnn.Execute(sqlStatement);
+
+            }
+        }
+
         /// <summary>
         /// Deletes the note with the matching id.
         /// </summary>
         /// <param name="id">Id of the note to delete.</param>
         public void deleteNote(int id)
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 var sqlStatement = "DELETE FROM Notes WHERE Id = @Id";
                 cnn.Execute(sqlStatement, new { Id = id });
@@ -32,7 +77,7 @@ namespace PaintingLibrary
         /// <returns>List of all notes in the database.</returns>
         public List<Note> loadAllNotes()
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 var output = cnn.Query<Note>("select * from Notes", new DynamicParameters()).ToList();
                 return output;
@@ -45,17 +90,17 @@ namespace PaintingLibrary
         /// <returns>All paintings and their associated categories.</returns>
         public List<Painting> loadAllPaintings()
         {
-            var cnnStr = loadConnectionString();
+            var cnnStr = connectionString;
             
             try
             {
-                var MyFirstCnn = new SQLiteConnection(cnnStr);
+                var MyFirstCnn = new SqliteConnection(cnnStr);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            using (IDbConnection cnn = new SQLiteConnection(cnnStr))
+            using (IDbConnection cnn = new SqliteConnection(cnnStr))
             {
                 try
                 {
@@ -135,7 +180,7 @@ namespace PaintingLibrary
 
         public void updatePainting(Painting painting)
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 string query = "update PaintingsTable set FileName = @FileName where Id = @Id";
                 var output = cnn.Execute(query, new { FileName = painting.FileName, Id = painting.Id });
@@ -156,7 +201,7 @@ namespace PaintingLibrary
 
         public void deletePainting(int id)
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 string query = "delete from CategorizedPaintings where PaintingId = @Id";
                 // Output contains all paintings, regardless of how many categories they are in.
@@ -175,7 +220,7 @@ namespace PaintingLibrary
         /// <returns>Whether or not the note was successfully added to database.</returns>
         public bool SaveNote(Note n)
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 int rows = cnn.Execute("insert into Notes (Description,Title) values (@Description,@Title)", n);
                 return rows >= 1;
@@ -186,7 +231,7 @@ namespace PaintingLibrary
         //public async void SaveNoteAsync(IProgress<bool> progress, Note n)
         //{
         //    progress.Report(false);
-        //    using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+        //    using (IDbConnection cnn = new SqliteConnection(connectionString))
         //    {
         //        int rows = await cnn.ExecuteAsync("insert into Notes (Description,Title) values (@Description,@Title)", n);
         //        progress.Report(true);
@@ -195,7 +240,7 @@ namespace PaintingLibrary
 
         public List<CategorizedPainting> loadAllCategorizedPaintings()
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 string query = "SELECT * FROM CategorizedPaintings";
                 var output = cnn.Query<CategorizedPainting>(query, new DynamicParameters());
@@ -213,29 +258,29 @@ namespace PaintingLibrary
         {
             DBQueryResult output = new DBQueryResult();
             /*
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 output.RowsAffected = cnn.Execute("insert into PaintingsTable (Name,FileName,Width,Length,DatePainted,Price, PaintingSurface) values (@Name,@FileName,@Width,@Length,@DatePainted,@Price,@PaintingSurface)", painting);
-                // output.LastID = Convert.ToInt32(((SQLiteConnection)cnn).LastInsertRowId);
+                // output.LastID = Convert.ToInt32(((SqliteConnection)cnn).LastInsertRowId);
                 output.LastID = painting.Id;
             }*/
 
-            SQLiteConnection cnn = new SQLiteConnection(loadConnectionString());
+            SqliteConnection cnn = new SqliteConnection(connectionString);
             cnn.Open();
 
-            SQLiteCommand Command = new SQLiteCommand("", cnn);
+            SqliteCommand Command = new SqliteCommand("", cnn);
 
             Command.CommandText = "insert into PaintingsTable (Name,FileName,Width,Height,DatePainted,Price,PaintingSurface) values (@Name,@FileName,@Width,@Height,@DatePainted,@Price,@PaintingSurface)";
 
             Command.CommandType = System.Data.CommandType.Text;
 
-            Command.Parameters.Add(new SQLiteParameter("@Name", painting.Name));
-            Command.Parameters.Add(new SQLiteParameter("@FileName", painting.FileName));
-            Command.Parameters.Add(new SQLiteParameter("@Width", painting.Width));
-            Command.Parameters.Add(new SQLiteParameter("@Height", painting.Height));
-            Command.Parameters.Add(new SQLiteParameter("@DatePainted", painting.DatePainted));
-            Command.Parameters.Add(new SQLiteParameter("@Price", painting.Price));
-            Command.Parameters.Add(new SQLiteParameter("@PaintingSurface", painting.PaintingSurface));
+            Command.Parameters.Add(new SqliteParameter("@Name", painting.Name));
+            Command.Parameters.Add(new SqliteParameter("@FileName", painting.FileName));
+            Command.Parameters.Add(new SqliteParameter("@Width", painting.Width));
+            Command.Parameters.Add(new SqliteParameter("@Height", painting.Height));
+            Command.Parameters.Add(new SqliteParameter("@DatePainted", painting.DatePainted));
+            Command.Parameters.Add(new SqliteParameter("@Price", painting.Price));
+            Command.Parameters.Add(new SqliteParameter("@PaintingSurface", painting.PaintingSurface));
 
             int Status = 0;
             try
@@ -244,7 +289,7 @@ namespace PaintingLibrary
             }
             catch (Exception ex) 
             {
-                int a = 5;
+                Console.WriteLine(ex.Message);
             }
             
 
@@ -267,7 +312,7 @@ namespace PaintingLibrary
 
         public void saveCategorizedPainting(int paintingID, int categoryID)
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 try
                 {
@@ -276,7 +321,7 @@ namespace PaintingLibrary
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("junk");
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
@@ -287,7 +332,7 @@ namespace PaintingLibrary
         /// <returns>A list of all categories in the database.</returns>
         public List<Category> loadAllCategories()
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 var output = cnn.Query<Category>("select * from Categories", new DynamicParameters());
                 return output.ToList();
@@ -306,7 +351,7 @@ namespace PaintingLibrary
 
         public void clearCategoriesForPainting(int id)
         {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
                 cnn.Execute("delete from CategorizedPaintings where PaintingId = @PaintingId",
                     new { PaintingId = id });

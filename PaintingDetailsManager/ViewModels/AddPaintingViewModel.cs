@@ -31,7 +31,7 @@ namespace PaintingDetailsManager.ViewModels
             //CurrentPainting.FileName = justFileName;
 
             //CurrentPaintingPath = originalFilePath;
-            Categories = _dataAccess.loadAllCategories();
+            Categories = _dataAccess.LoadAllCategories();
             CurrentPainting.PaintingSurface = SelectedSurfaceType;
             AddedCategories = new ObservableCollection<Category>();
             MySurfaceType = Enum.GetValues(typeof(SurfaceType)).Cast<SurfaceType>().ToList();
@@ -174,15 +174,15 @@ namespace PaintingDetailsManager.ViewModels
 
             // Step 1 - Save painting to the database.
             
-            DBQueryResult result = _dataAccess.savePainting(CurrentPainting);
-            CurrentPainting.Id = result.LastID;
+            _dataAccess.SavePainting(CurrentPainting);
+            //CurrentPainting.Id = result.LastID;
 
             // We need to get the ID of the item we just saved.
 
             // Step 2 - Super important, save categories to the database.
             foreach (Category c in CurrentPainting.Categories)
             {
-                _dataAccess.saveCategorizedPainting(CurrentPainting.Id, c.ID);
+                _dataAccess.SaveCategorizedPainting(CurrentPainting.Id, c.ID);
             }
 
             // Step 2 - If we were successful, copy the image to images folder.

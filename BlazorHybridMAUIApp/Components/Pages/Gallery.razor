@@ -1,15 +1,37 @@
-﻿
+﻿@using PaintingLibrary.Models
 
+@inject SqliteDataAccess dataAccess;
 
 <h3>Gallery</h3>
+
+
+
+@foreach (var item in paintings)
+{
+    <GalleryItem>@item.FileName</GalleryItem>
+}
 
 <GalleryItem></GalleryItem>
 
 @code {
-   /* private List<Note> notes;
+    /* private List<Note> notes;
+     * 
+         private void OnInitialize()
+             {
+             //notes = sqliteDataAccess.loadAllNotes(); // Call method from the library
+         }*/
 
-    private void OnInitialize()
+    private List<Painting> paintings;
+
+    protected override async Task OnInitializedAsync()
     {
-        //notes = sqliteDataAccess.loadAllNotes(); // Call method from the library
-    }*/
+        // First off, we'll just load as usual from the database.
+        paintings = dataAccess.LoadAllPaintings();
+
+        foreach (var p in paintings)
+        {
+            
+        }
+    }
+
 }

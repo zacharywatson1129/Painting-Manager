@@ -21,7 +21,7 @@ namespace PaintingDetailsManager.ViewModels
             _dataAccess = dataAccess;
             loadImages();
 
-            Categories = _dataAccess.loadAllCategories();
+            Categories = _dataAccess.LoadAllCategories();
 
             this.SizeQuantityTable = new DataTable();
 
@@ -173,7 +173,7 @@ namespace PaintingDetailsManager.ViewModels
             try
             {
                 allPaintings.Clear();
-                _dataAccess.loadAllPaintings().ForEach(p => allPaintings.Add(p));
+                _dataAccess.LoadAllPaintings().ForEach(p => allPaintings.Add(p));
                 foreach (Painting p in allPaintings)
                 {
                     p.FileName = imagesFolderPath + p.FileName;

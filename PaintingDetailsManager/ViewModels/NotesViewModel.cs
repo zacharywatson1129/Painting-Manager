@@ -44,7 +44,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void DeleteNote()
         {
-            _dataAccess.deleteNote(SelectedNote.Id);
+            _dataAccess.DeleteNote(SelectedNote.Id);
             Notes.Remove(SelectedNote);
         }
 
@@ -93,7 +93,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void LoadNotes()
         {
-            List<Note> temp = _dataAccess.loadAllNotes();
+            List<Note> temp = _dataAccess.LoadAllNotes();
             Notes = new BindableCollection<Note>(temp);
         }
 

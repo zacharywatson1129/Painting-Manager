@@ -8,7 +8,7 @@ namespace PaintingLibrary.Models
 {
     public class CategorizedPainting
     {
-        public int PaintingID { get; set; }
-        public int CategoryID { get; set; }
+        public Guid PaintingID { get; set; }
+        public Guid CategoryID { get; set; }
     }
 }

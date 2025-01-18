@@ -8,9 +8,31 @@
     Width="800"
     Height="600"
     Background="#FF3E3E3E"
-    FontFamily="HP Simplified"
+    FontFamily="Segoe UI"
     FontSize="16"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+
+                        <Border
+                            Width="70"
+                            Height="70"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0"
+                            CornerRadius="10">
+
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -27,47 +49,42 @@
             Grid.Row="0"
             Grid.RowSpan="4"
             Margin="5,0,5,0"
+            VerticalAlignment="Center"
             Orientation="Vertical">
             <Button
                 x:Name="LoadDefaultView"
-                Width="75"
-                Height="75"
-                Margin="0,0,0,0">
+                Margin="0,0,0,5"
+                Style="{StaticResource NavButtonStyle}">
                 <Image Width="50" Source="..\Icons\iconmonstr-home-3-240.png" />
             </Button>
             <Button
                 x:Name="CreateNewImage"
-                Width="75"
-                Height="75"
-                Margin="0">
+                Margin="0,0,0,5"
+                Style="{StaticResource NavButtonStyle}">
                 <Image Width="50" Source="..\Icons\iconmonstr-plus-2-240.png" />
             </Button>
             <Button
                 x:Name="LoadNotesPage"
-                Width="75"
-                Height="75"
-                Margin="0">
+                Margin="0,0,0,5"
+                Style="{StaticResource NavButtonStyle}">
                 <Image Width="50" Source="..\Icons\iconmonstr-note-20-240.png" />
             </Button>
             <Button
                 x:Name="LoadListView"
-                Width="75"
-                Height="75"
-                Margin="0">
+                Margin="0,0,0,5"
+                Style="{StaticResource NavButtonStyle}">
                 <Image Width="50" Source="..\Icons\iconmonstr-menu-4-240.png" />
             </Button>
             <Button
                 x:Name="LoadGalleryView"
-                Width="75"
-                Height="75"
-                Margin="0">
+                Margin="0,0,0,5"
+                Style="{StaticResource NavButtonStyle}">
                 <Image Width="50" Source="..\Icons\iconmonstr-picture-17-240.png" />
             </Button>
             <Button
                 x:Name="LoadAPIConfigureView"
-                Width="75"
-                Height="75"
-                Margin="0">
+                Margin="0"
+                Style="{StaticResource NavButtonStyle}">
                 <Image Width="50" Source="..\Icons\iconmonstr-globe-thin-240.png" />
             </Button>
 
@@ -79,77 +96,5 @@
             Grid.RowSpan="4"
             Grid.Column="1"
             Grid.ColumnSpan="2" />
-        <!--
-        <Button x:Name="btnHome" Margin="20">
-            <Image Margin="20" Source="..\Icons\iconmonstr-home-3-240.png" />
-        </Button>
-        <Button x:Name="btnImport" Margin="20" Grid.Column="1">
-            <Image Margin="20" Source="..\Icons\iconmonstr-plus-2-240.png" />
-        </Button>
-        <Button x:Name="btnNotes" Margin="20" Grid.Row="1">
-            <Image Margin="20" Source="..\Icons\iconmonstr-note-20-240.png" />
-        </Button>
-        <Button x:Name="btnSomething" Margin="20" Grid.Row="1" Grid.Column="1">
-            <Image Margin="20" Source="..\Icons\iconmonstr-picture-17-240.png" />
-        </Button>-->
-
-        <!--<ComboBox x:Name="categoriesComboBox" SelectionChanged="categoriesComboBox_SelectionChanged" Grid.Column="2" />
-        <Button x:Name="btnAddCategory" Grid.Row="1" Grid.Column="2"
-                Content="New Category" />
-        <Button Grid.RowSpan="2" Margin="50 5"
-                Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
-                Foreground="White" x:Name="btnImport"
-                Content="IMPORT PICTURES" Click="btnLoadImage_Click">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Color="#FFED0074" />
-                    <GradientStop Color="#FFFF0030" Offset="0.45" />
-                    <GradientStop Color="#FF6A00FF" Offset="0.95" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="20" />
-                </Style>
-            </Button.Resources>
-        </Button>
-
-        <Button FontSize="18" Grid.ColumnSpan="3" Content="Import Painting" x:Name="btnLoadImage" Click="btnLoadImage_Click" />
-
-        <Grid Grid.RowSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="7*" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Image x:Name="img" Source="Images\demo.jpg" Grid.ColumnSpan="3" />
-            <Button Grid.Row="1" HorizontalAlignment="Right" Width="30" Height="30">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5" />
-                    </Style>
-                </Button.Resources>
-                <Image Source="icons\iconmonstr-arrow-64-48.png" Margin="5" />
-            </Button>
-            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" x:Name="picNum"
-                       Text="0/0" />
-            <Button HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" Width="30" Height="30"
-                Content="→" x:Name="btnRight"
-                Click="btnRight_Click">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5" />
-                    </Style>
-                </Button.Resources>
-            </Button>
-        </Grid>
-        <TextBlock Grid.Row="2" x:Name="paintingName">Name of Painting...</TextBlock>
-        <TextBlock Grid.Row="3" x:Name="paintingSize">Width" x Length"</TextBlock>
-        <TextBlock Grid.Row="4" x:Name="paintedDate">4-7-2021</TextBlock>
-        <TextBlock Grid.Row="5" x:Name="price">$Price or Sold</TextBlock>-->
     </Grid>
 </Window>

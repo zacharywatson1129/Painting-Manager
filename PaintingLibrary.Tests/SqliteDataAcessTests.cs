@@ -17,12 +17,12 @@ namespace PaintingLibrary.Tests
             using (var mock = AutoMock.GetLoose())
             {
                 mock.Mock<IDataAccess>()
-                    .Setup(x => x.loadAllPaintings())
+                    .Setup(x => x.LoadAllPaintings())
                     .Returns(LoadSamplePaintings());
 
                 var cls = mock.Create<SqliteDataAccess>();
                 var expected = LoadSamplePaintings();
-                var actual = cls.loadAllPaintings();
+                var actual = cls.LoadAllPaintings();
 
                 Assert.True(actual != null);
                 Assert.Equal(expected.Count, actual.Count);

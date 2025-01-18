@@ -9,6 +9,7 @@ using System.Data;
 using Microsoft.Data.Sqlite;
 using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using PaintingLibrary.DapperTypeHandlers;
 
 namespace PaintingLibrary
 {
@@ -20,6 +21,8 @@ namespace PaintingLibrary
         public SqliteDataAccess(string cnnString)
         {
             connectionString = cnnString;
+            // Not sure if this is where we do it?
+            SqlMapper.AddTypeHandler(new GuidTypeHandler());
         }
 
         public void InitializeDatabase()
@@ -62,7 +65,7 @@ namespace PaintingLibrary
         /// Deletes the note with the matching id.
         /// </summary>
         /// <param name="id">Id of the note to delete.</param>
-        public void deleteNote(int id)
+        public void DeleteNote(Guid id)
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
@@ -75,7 +78,7 @@ namespace PaintingLibrary
         /// Loads all notes from the database.
         /// </summary>
         /// <returns>List of all notes in the database.</returns>
-        public List<Note> loadAllNotes()
+        public List<Note> LoadAllNotes()
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
@@ -88,7 +91,7 @@ namespace PaintingLibrary
         /// Loads all paintings from the datbase and associates them with their categories.
         /// </summary>
         /// <returns>All paintings and their associated categories.</returns>
-        public List<Painting> loadAllPaintings()
+        public List<Painting> LoadAllPaintings()
         {
             var cnnStr = connectionString;
             
@@ -109,7 +112,7 @@ namespace PaintingLibrary
                                                         new DynamicParameters()).ToList();
 
                     List<CategorizedPainting> categorizedPaintings = loadAllCategorizedPaintings();
-                    List<Category> categories = loadAllCategories();
+                    List<Category> categories = LoadAllCategories();
                     foreach (var cp in categorizedPaintings)
                     {
                         // First, find the corresponding category.
@@ -178,7 +181,22 @@ namespace PaintingLibrary
             }
         }
 
-        public void updatePainting(Painting painting)
+        /// <summary>
+        /// Helper method to take some paintings and just get their file names.
+        /// </summary>
+        /// <param name="paintings">List of paintings to search</param>
+        /// <returns>List of strings with painting file names.</returns>
+        public List<string> getPaintingFileNames(List<Painting> paintings)
+        {
+            List<string> output = new List<string>();
+            foreach (var p in paintings)
+            {
+                output.Add(p.FileName);
+            }
+            return output;
+        }
+
+        public void UpdatePainting(Painting painting)
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
@@ -199,7 +217,7 @@ namespace PaintingLibrary
             }
         }
 
-        public void deletePainting(int id)
+        public void DeletePainting(Guid id)
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
@@ -222,7 +240,8 @@ namespace PaintingLibrary
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
-                int rows = cnn.Execute("insert into Notes (Description,Title) values (@Description,@Title)", n);
+                n.Id = Guid.NewGuid();
+                int rows = cnn.Execute("insert into Notes (Id,Description,Title) values (@Id, @Description,@Title)", n);
                 return rows >= 1;
             }
         }
@@ -254,7 +273,7 @@ namespace PaintingLibrary
         //    // throw new NotImplementedException();
         //}
 
-        public DBQueryResult savePainting(Painting painting)
+        public void SavePainting(Painting painting)
         {
             DBQueryResult output = new DBQueryResult();
             /*
@@ -270,10 +289,13 @@ namespace PaintingLibrary
 
             SqliteCommand Command = new SqliteCommand("", cnn);
 
-            Command.CommandText = "insert into PaintingsTable (Name,FileName,Width,Height,DatePainted,Price,PaintingSurface) values (@Name,@FileName,@Width,@Height,@DatePainted,@Price,@PaintingSurface)";
+            Command.CommandText = "insert into PaintingsTable (Id, Name,FileName,Width,Height,DatePainted,Price,PaintingSurface) values (@Id, @Name,@FileName,@Width,@Height,@DatePainted,@Price,@PaintingSurface)";
 
             Command.CommandType = System.Data.CommandType.Text;
 
+            painting.Id = Guid.NewGuid();
+
+            Command.Parameters.Add(new SqliteParameter("@Id", painting.Id));
             Command.Parameters.Add(new SqliteParameter("@Name", painting.Name));
             Command.Parameters.Add(new SqliteParameter("@FileName", painting.FileName));
             Command.Parameters.Add(new SqliteParameter("@Width", painting.Width));
@@ -282,7 +304,7 @@ namespace PaintingLibrary
             Command.Parameters.Add(new SqliteParameter("@Price", painting.Price));
             Command.Parameters.Add(new SqliteParameter("@PaintingSurface", painting.PaintingSurface));
 
-            int Status = 0;
+            /*int Status = 0;
             try
             {
                 Status = Command.ExecuteNonQuery();
@@ -307,10 +329,10 @@ namespace PaintingLibrary
             output.RowsAffected = Status;
             output.LastID = LastRowID;
             cnn.Close();
-            return output;
+            return output;*/
         }
 
-        public void saveCategorizedPainting(int paintingID, int categoryID)
+        public void SaveCategorizedPainting(Guid paintingID, Guid categoryID)
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
@@ -330,7 +352,7 @@ namespace PaintingLibrary
         /// Loads all categories from the database.
         /// </summary>
         /// <returns>A list of all categories in the database.</returns>
-        public List<Category> loadAllCategories()
+        public List<Category> LoadAllCategories()
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {
@@ -349,7 +371,7 @@ namespace PaintingLibrary
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public void clearCategoriesForPainting(int id)
+        public void ClearCategoriesForPainting(Guid id)
         {
             using (IDbConnection cnn = new SqliteConnection(connectionString))
             {

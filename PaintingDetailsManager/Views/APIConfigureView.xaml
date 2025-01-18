@@ -16,6 +16,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -57,6 +58,8 @@
             Grid.Row="3"
             Margin="15,15"
             Background="DarkGreen"
+            BorderBrush="Black"
+            BorderThickness="3"
             Foreground="White">
             Start API
         </Button>
@@ -66,8 +69,29 @@
             Grid.Column="1"
             Margin="15,15"
             Background="DarkRed"
+            BorderBrush="Black"
+            BorderThickness="3"
             Foreground="White">
             Stop API
+        </Button>
+        <TextBlock
+            x:Name="ProcessName"
+            Grid.Row="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontWeight="SemiBold"
+            Foreground="DarkRed" />
+
+        <Button
+            x:Name="CheckProcessStatus"
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="10,15"
+            Background="DarkBlue"
+            BorderBrush="Black"
+            BorderThickness="2"
+            Foreground="White">
+            Check Process Status
         </Button>
     </Grid>
 </UserControl>

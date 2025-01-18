@@ -20,7 +20,7 @@ namespace PaintingDetailsManager.ViewModels
         public ListViewModel(IDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
-            Paintings = new BindableCollection<Painting>(_dataAccess.loadAllPaintings().AsEnumerable());
+            Paintings = new BindableCollection<Painting>(_dataAccess.LoadAllPaintings().AsEnumerable());
             RefreshData();
         }
 
@@ -31,7 +31,7 @@ namespace PaintingDetailsManager.ViewModels
 
         public void RefreshData()
         {
-            var allPaintings = _dataAccess.loadAllPaintings();
+            var allPaintings = _dataAccess.LoadAllPaintings();
 
             var orderedPaintings = from p in allPaintings
                                    orderby p.DatePainted
@@ -49,7 +49,7 @@ namespace PaintingDetailsManager.ViewModels
         {
             if (SelectedPainting != null)
             {
-                _dataAccess.deletePainting(SelectedPainting.Id);
+                _dataAccess.DeletePainting(SelectedPainting.Id);
                 RefreshData();
             }
         }

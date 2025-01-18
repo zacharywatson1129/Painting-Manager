@@ -10,13 +10,16 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
+// Yes, could just do an OR before, this is temporary.
 
-app.UseHttpsRedirection();
+
+// We comment this out because of the middleware error.
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -20,7 +20,7 @@ namespace PaintingDetailsManager.ViewModels
         public GridViewModel(IDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
-            List<Painting> allPaintings = _dataAccess.loadAllPaintings();
+            List<Painting> allPaintings = _dataAccess.LoadAllPaintings();
             List<string> paths = new List<string>();
             foreach (Painting p in allPaintings)
             {

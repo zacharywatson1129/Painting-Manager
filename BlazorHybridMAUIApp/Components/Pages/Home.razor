@@ -25,7 +25,7 @@
         {
             
             DataAccess.InitializeDatabase();
-            var notes = DataAccess.loadAllNotes(); // Example method call
+            var notes = DataAccess.LoadAllNotes(); // Example method call
             statusMessage = $"Loaded {notes.Count} notes successfully!";
         }
         catch (Exception ex)

@@ -27,10 +27,10 @@ namespace PaintingDetailsManager.ViewModels
         }
 
         // Todo: Remove id from this contructor, pass through an event.
-        public EditPaintingViewModel(int id, IDataAccess dataAccess)
+        public EditPaintingViewModel(Guid id, IDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
-            List<Painting> allPaintings = _dataAccess.loadAllPaintings();
+            List<Painting> allPaintings = _dataAccess.LoadAllPaintings();
             CurrentPainting = allPaintings.Where((p) => p.Id == id).First();
 
             // Probably a bad name. We are sort of assuming we're using a DatePicker, when technically it could be any component
@@ -39,7 +39,7 @@ namespace PaintingDetailsManager.ViewModels
             
             // This is because the file name is JUST the file name, does not include path.
             CurrentPaintingPath = imagesFolderPath + CurrentPainting.FileName;
-            Categories = _dataAccess.loadAllCategories();
+            Categories = _dataAccess.LoadAllCategories();
 
             MySurfaceType = Enum.GetValues(typeof(SurfaceType)).Cast<SurfaceType>().ToList();
             SelectedSurfaceType =CurrentPainting.PaintingSurface;
@@ -192,18 +192,18 @@ namespace PaintingDetailsManager.ViewModels
             // TODO: Fill in all the other properties.
 
             // Step 1 - Save updated painting to the database.
-            _dataAccess.updatePainting(CurrentPainting);
+            _dataAccess.UpdatePainting(CurrentPainting);
 
             // Step 2 - Clear categories for this painting - just wipe them out and resave them. Much easier than
             // determining which ones may have been deleted or which ones were not. Might approach this differently
             // if there was going to be an exceptionally large amount of categories but I don't expect that.
-            _dataAccess.clearCategoriesForPainting(CurrentPainting.Id);
+            _dataAccess.ClearCategoriesForPainting(CurrentPainting.Id);
             
             // Step 3 - Save categories to the database.
             foreach (Category c in AddedCategories)
             {
                 // Console.Write("test");
-                _dataAccess.saveCategorizedPainting(CurrentPainting.Id, c.ID);
+                _dataAccess.SaveCategorizedPainting(CurrentPainting.Id, c.ID);
             }
 
             // Copy the picture over. If it's a new one it gets copied, if an old one, I guess it gets overwritten?
